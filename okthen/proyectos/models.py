@@ -1,3 +1,4 @@
 from django.db import models
 
-# Create your models here.
+class Proyecto(models.Model):
+    nombre = models.CharField(blank=False, null=True, max_length=300)

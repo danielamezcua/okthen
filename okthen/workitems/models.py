@@ -1,3 +1,6 @@
 from django.db import models
+from proyectos.models import Proyecto
 
-# Create your models here.
+class WorkItem(models.Model):
+    nombre = models.CharField(max_length=400)
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE)
