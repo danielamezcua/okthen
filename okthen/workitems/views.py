@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def ver_work_item(request):
+    return render(request, 'detalle_work_item.html')

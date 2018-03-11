@@ -17,7 +17,11 @@
             <h3>Work Items</h3>
         </div>
         <div class="col s6 right-align">
-              <a class="btn-floating waves-effect waves-light black"><i class="material-icons">add</i></a>
+             <div class="fixed-action-btn" >
+                  <a class="btn-floating btn-large black">
+                    <i class="large material-icons">add</i>
+                  </a>
+             </div>
         </div>
     </div>
       <ul class="collapsible">
@@ -80,6 +84,10 @@
     <script>
          $(document).ready(function(){
             $('.collapsible').collapsible();
+            var elem = document.querySelector('.fixed-action-btn');
+            var instance = M.FloatingActionButton.init(elem, {
+                direction: 'left'
+            });
         });
     </script>
 {% endblock %}
