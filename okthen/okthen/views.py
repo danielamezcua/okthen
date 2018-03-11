@@ -1,4 +1,10 @@
 from django.shortcuts import render
 
+from django.shortcuts import render
+
+
 def index(request):
-    render(request, 'base.html')
+    return render(request, 'index.html')
+
+def login(request):
+    return render(request, 'login.html')

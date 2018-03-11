@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+  <div class="row login">
+        <div class="col l3 m2"></div>
+          <div class="col s12 m8 l5">
+            <div class="card-panel hoverable z-depth-6">
+                <h5> El director de departamento solicita tu autenticación </h5>
+             <form id="login-form" action="" method="post">
+                    {% csrf_token %}
+                        <div class="input-field col s12">
+                            <select class="black-text">
+                              <option value="" disabled selected>Choose your option</option>
+                              <option value="1">Option 1</option>
+                              <option value="2">Option 2</option>
+                              <option value="3">Option 3</option>
+                            </select>
+                            <label>Materialize Select</label>
+                          </div>
+                       <button type="submit" class="btn black btn-primary"><i class="fa fa-sign-in"></i>&nbsp  Iniciar sesión</button>
+
+                    <!-- This should be submit button but I replaced it with <a> for demo purposes-->
+                  </form>
+            </div>
+          </div>
+        <div class="col l3 m2"></div>
+    </div>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function(){
+        document.getElementsByTagName('main')[0].style.padding = 0;
+        $('select').formSelect();
+         $(".dropdown-content>li>span").css("color", "#000000");
+    });
+</script>
+{% endblock %}
