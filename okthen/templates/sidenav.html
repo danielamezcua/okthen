@@ -1,0 +1,12 @@
+{% load staticfiles %}
+<ul id="slide-out" class="sidenav-fixed sidenav">
+    <li><div class="user-view">
+      <a href="#"> <img style="width:100%;" src="{% static 'img/cavelabs.png' %}"></a>
+    </div></li>
+    {% for proyecto in proyectos %}
+        <li><a href="#!">{{ proyecto }}</a></li>
+    {% endfor %}
+    <li><div class="divider"></div></li>
+    <li><a href="#!"><i class="material-icons">add</i>Nuevo Proyecto</a></li>
+  </ul>
+  <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>

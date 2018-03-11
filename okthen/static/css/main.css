@@ -1,0 +1,25 @@
+main, footer, header{
+  padding-left: 300px;
+}
+
+.top {
+  margin-top: -2.5em;
+  background-color: black;
+  height: 3em;
+  color:white;
+  padding-top:-.8em;
+}
+
+h6 {
+  font-size: 1.5em;
+}
+
+.transparent {
+      opacity: 0.4;
+}
+
+@media only screen and (max-width: 992px) {
+  header, main, footer {
+    padding-left: 0; } }
+
+

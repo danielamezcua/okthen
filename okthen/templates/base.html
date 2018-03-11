@@ -1,0 +1,57 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+      <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    {% block head %}{% endblock head %}
+    <title>{% block title %}{% endblock title %}</title>
+  </head>
+  <body>
+    {% include 'sidenav.html' %}
+    <header>
+        <div class="top row">
+            <div class="col s12 m6 l6 offset-m6 offset-l6 right-align">
+                <h6> Daniel Amezcua <i class="material-icons icon-top">exit_to_app</i> </h6>
+            </div>
+        </div>
+    </header>
+    <main>
+          {% block content %}
+          {% endblock content %}
+    </main>
+
+   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src=" https://cdn.jsdelivr.net/jquery.cookie/1.4.1/jquery.cookie.min.js "></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js'></script>
+
+     <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
+    {# sidenav js init #}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.sidenav').sidenav();
+        });
+    </script>
+    {# Custom js #}
+    {% block js %}{% endblock js %}
+    {% if messages %}
+    <script type="text/javascript">
+
+      {% for message in messages %}
+          <!--{% if message.level != 40 %}-->
+            M.toast({html: '{{ message }}'})
+          {% endif %}
+      {% endfor %}
+    </script>
+    {% endif %}
+  </body>
+</html>
