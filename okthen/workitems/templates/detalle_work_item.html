@@ -25,7 +25,7 @@
                   </a>
                   <ul>
                       <li><a class="btn-floating grey lighten-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Agregar defecto"><i class="material-icons">broken_image</i></a></li>
-                      <li><a class="btn-floating blue-grey darken-4 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Agregar task"><i class="material-icons">create</i></a></li>
+                      <li><a class="btn-floating blue-grey darken-4 tooltipped btn modal-trigger" href="#modal_task" data-position="bottom" data-delay="50" data-tooltip="Agregar task"><i class="material-icons">create</i></a></li>
                   </ul>
                 </div>
             </div>
@@ -61,6 +61,9 @@
         </div>
         <div class="col s1"> </div>
     </div>
+
+    <!--Modals-->
+    {% include 'modal_task.html' %}
 {% endblock %}
 
 {% block js %}
@@ -71,6 +74,9 @@
              var instance = M.FloatingActionButton.init(elem, {
                 direction: 'left'
              });
+
+             //Modals
+            $('.modal').modal();
         });
     </script>
 {% endblock %}

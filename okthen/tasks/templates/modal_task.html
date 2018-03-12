@@ -1,0 +1,27 @@
+<!-- Modal Agregar task -->
+  <div id="modal_task" class="modal">
+    <div class="modal-content">
+      <h4>Nueva task </h4>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="input-field">
+                    <label for="{{ modal_task.descripcion.id_for_label }}"> Descripción </label>
+                    {{ form_task.descripcion }}
+                </div>
+            </div>
+            <div class="row valign-wrapper">
+                <div class="col l4 m4 s6 input-field">
+                    <label for="{{ modal_task.tiempo_estimado.id_for_label }}"> Tiempo estimado </label>
+                    {{ form_task.tiempo_estimado }}
+                </div>
+                <div class="col l5 m5 s6">
+                    horas
+                </div>
+                 <div class="col s12 m3 l3">
+                    <input class="btn black" value="Crear" type="submit">
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>

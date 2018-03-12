@@ -1,0 +1,16 @@
+<!-- Modal Agregar work Item -->
+  <div id="agregar_proyecto" class="modal">
+    <div class="modal-content">
+      <h4>Agregar Proyecto</h4>
+        <form action="{% url 'proyectos:agregar_proyecto' %}"method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="row input-field">
+                    <input type="text" name="nombre" id="nombre"/>
+                    <label for="nombre"> Nombre del proyecto </label>
+                </div>
+                <input type="submit" class="btn black" value="Crear">
+            </div>
+        </form>
+    </div>
+  </div>

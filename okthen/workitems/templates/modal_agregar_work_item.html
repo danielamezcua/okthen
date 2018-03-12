@@ -1,0 +1,15 @@
+<!-- Modal Agregar work Item -->
+  <div id="agregar_work_item" class="modal">
+    <div class="modal-content">
+      <h4>Agregar Work Item</h4>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form_work_item }}
+            <div class="row">
+                <div class="col s2 offset-s10 right-align">
+                    <input type="submit" class="btn black" value="Crear">
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>

@@ -9,7 +9,7 @@ class Task(models.Model):
                       (3, "Terminada"))
     descripcion = models.CharField(blank=False,null=True, max_length=600)
     tiempo_estimado = models.DurationField()
-    estado = models.IntegerField(choices=ESTADO_CHOICES)
+    estado = models.IntegerField(choices=ESTADO_CHOICES, default=0)
     defecto = models.BooleanField(default=False)
     personas = models.ManyToManyField(Persona, through='PersonaTaskRelacion')
     work_item = models.ForeignKey(WorkItem, on_delete=models.CASCADE)

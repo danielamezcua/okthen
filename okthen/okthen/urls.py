@@ -19,8 +19,9 @@ from django.urls import path, include
 from django.shortcuts import redirect
 
 urlpatterns = [
-    path('', views.index),
-    path('login', views.login),
+    path('', views.index, name='index'),
+    path('login', views.login, name='login'),
+    path('logout', views.logout, name='logout'),
     path('admin/', admin.site.urls),
     path('proyectos/', include('proyectos.urls', namespace='proyectos')),
     path('workitems/', include('workitems.urls', namespace='workitems')),

@@ -70,6 +70,11 @@ TEMPLATES = [
         },
     },
 ]
+DATE_FORMAT = ['%d/%m/%Y',]  # 15/10/2017
+DATE_INPUT_FORMATS = ['%d/%m/%Y',]  # 15/10/2017
+
+TIME_FORMAT = ['%H:%M', ]  # 14:30
+TIME_INPUT_FORMATS = ['%H:%M', ]  # 14:30
 
 WSGI_APPLICATION = 'okthen.wsgi.application'
 

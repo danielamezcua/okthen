@@ -1,0 +1,25 @@
+<!-- Modal Acabar task -->
+  <div id="modal_acabar_task" class="modal">
+    <div class="modal-content">
+      <h4> Verificar información </h4>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row valign-wrapper">
+                <div class="input-field col l4 m4 s12">
+                   {{ form_acabar_task.inicio }}
+                    <span class="helper-text">Inicio</span>
+                </div>
+                <div class="col l4 m4 s12 input-field">
+                    {{ form_acabar_task.fin }}
+                    <span class="helper-text">Inicio</span>
+                </div>
+                 <div class="col s12 m4 l4">
+                     {{ form_acabar_task.acabada }}
+                     <span class="helper-text">¿Se terminó la task?</span>
+                </div>
+            </div>
+            <div class="row">
+                <input class="btn black" type="submit" value="OK">
+            </div>
+        </form>
+    </div>

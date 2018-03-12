@@ -7,6 +7,7 @@
         <li><a href="#!">{{ proyecto }}</a></li>
     {% endfor %}
     <li><div class="divider"></div></li>
-    <li><a href="#!"><i class="material-icons">add</i>Nuevo Proyecto</a></li>
+    <li><a class="modal-trigger" href="#agregar_proyecto"><i class="material-icons">add</i>Nuevo Proyecto</a></li>
   </ul>
   <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    {% include 'agregar_proyecto_modal.html' %}

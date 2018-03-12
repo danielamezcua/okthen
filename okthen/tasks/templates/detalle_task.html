@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="col s6 left-align">
-                    <a class="btn-floating btn-large red waves-effect waves-light"><i class="material-icons">stop</i></a>
+                    <a class="btn-floating btn-large red waves-effect waves-light modal-trigger" href="#modal_acabar_task"><i class="material-icons">stop</i></a>
                 </div>
 
                 <div class="col s6 right-align">
@@ -65,5 +65,14 @@
         <div class="col s1"></div>
     </div>
 
+    {% include 'modal_acabar_task.html' %}
 {% endblock %}
-{% block js %} {% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function(){
+            $('.modal').modal();
+            $('select').formSelect();
+            $(".dropdown-content>li>span").css("color", "#000000");
+        });
+    </script>
+{% endblock %}
