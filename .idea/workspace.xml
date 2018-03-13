@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="31e02556-f909-4023-b0b1-8004275a4e79" name="Default" comment="Crear Modelos">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/okthen/Pipfile.lock" afterPath="$PROJECT_DIR$/okthen/Pipfile.lock" />
-    </list>
+    <list default="true" id="31e02556-f909-4023-b0b1-8004275a4e79" name="Default" comment="Crear Modelos" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -112,8 +110,8 @@
       <file leaf-file-name="Pipfile.lock" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/okthen/Pipfile.lock">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1382">
-              <caret line="0" column="1" lean-forward="false" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="1" />
+            <state relative-caret-position="540">
+              <caret line="36" column="15" lean-forward="false" selection-start-line="36" selection-start-column="9" selection-end-line="36" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -796,8 +794,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/okthen/Pipfile.lock">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1382">
-          <caret line="0" column="1" lean-forward="false" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="1" />
+        <state relative-caret-position="540">
+          <caret line="36" column="15" lean-forward="false" selection-start-line="36" selection-start-column="9" selection-end-line="36" selection-end-column="15" />
           <folding />
         </state>
       </provider>
