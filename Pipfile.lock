@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "05d735815166060b75de4dce61deea0862fc2f38bcb8eea99f7dcebb99bf6e5d"
+            "sha256": "53e2c7cc18b7f5b653f6446098461c3e0537c38b4059d18cefe98cf5ae8e362e"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -27,9 +27,6 @@
         ]
     },
     "default": {
-        "1f82eb5": {
-            "path": "/Users/daniel2/Desktop/okthen/Pipfile"
-        },
         "dj-database-url": {
             "hashes": [
                 "sha256:851785365761ebe4994a921b433062309eb882fedd318e1b0fcecc607ed02da9",
