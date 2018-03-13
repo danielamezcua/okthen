@@ -1,1 +1,1 @@
-web: gunicorn testproject.wsgi --access-logfile -
+web: gunicorn okthen.wsgi --access-logfile -
