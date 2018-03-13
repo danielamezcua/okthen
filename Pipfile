@@ -9,7 +9,6 @@ name = "pypi"
 
 django-heroku = "*"
 
-
 [dev-packages]
 
 pytest = "*"
