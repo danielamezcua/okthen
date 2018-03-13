@@ -8,7 +8,6 @@ name = "pypi"
 [packages]
 
 django-heroku = "*"
-"1f82eb5" = {path = "/Users/daniel2/Desktop/okthen/Pipfile"}
 
 
 [dev-packages]
