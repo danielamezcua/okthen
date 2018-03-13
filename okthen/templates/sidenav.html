@@ -3,9 +3,7 @@
     <li><div class="user-view">
       <a href="#"> <img style="width:100%;" src="{% static 'img/cavelabs.png' %}"></a>
     </div></li>
-    {% for proyecto in proyectos %}
-        <li><a href="#!">{{ proyecto }}</a></li>
-    {% endfor %}
+
     <li><div class="divider"></div></li>
     <li><a class="modal-trigger" href="{% url 'proyectos:index' %}"><i class="material-icons">work</i>Proyectos</a></li>
 </ul>

@@ -2,11 +2,12 @@ from django.forms import ModelForm
 from django import forms
 from .models import Task, PersonaTaskRelacion
 from okthen import settings
+import datetime
 
 
 class DateTimeInput(forms.DateTimeInput):
     input_type = 'datetime-local'
-    format(['%Y-%m-%dT%H:%M'])
+    format(['%Y-%m-%dT%H:%M:%S'])
 
 class ModalTask(ModelForm):
     model = Task
@@ -14,6 +15,10 @@ class ModalTask(ModelForm):
     class Meta:
         model = Task
         fields = ['descripcion', 'tiempo_estimado']
+
+    def clean_tiempo_estimado(self):
+        tiempo = self.cleaned_data['tiempo_estimado']
+        return datetime.timedelta(hours=tiempo)
 
 class AcabarTask(ModelForm):
     OPCIONES = (

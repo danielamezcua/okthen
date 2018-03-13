@@ -2,7 +2,7 @@
   <div id="modal_acabar_task" class="modal">
     <div class="modal-content">
       <h4> Verificar información </h4>
-        <form method="POST">
+        <form action="{% url 'tasks:log_task' task.id %}" method="POST">
             {% csrf_token %}
             <div class="row valign-wrapper">
                 <div class="input-field col l4 m4 s12">
@@ -11,7 +11,7 @@
                 </div>
                 <div class="col l4 m4 s12 input-field">
                     {{ form_acabar_task.fin }}
-                    <span class="helper-text">Inicio</span>
+                    <span class="helper-text">Fin</span>
                 </div>
                  <div class="col s12 m4 l4">
                      {{ form_acabar_task.acabada }}

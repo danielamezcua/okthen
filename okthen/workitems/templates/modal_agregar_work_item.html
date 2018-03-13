@@ -2,7 +2,7 @@
   <div id="agregar_work_item" class="modal">
     <div class="modal-content">
       <h4>Agregar Work Item</h4>
-        <form method="POST">
+        <form action='{% url 'workitems:agregar_workitem' proyecto.id %} 'method="POST">
             {% csrf_token %}
             {{ form_work_item }}
             <div class="row">

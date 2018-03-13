@@ -12,7 +12,15 @@
     <div class="row">
         <div class="col s1"> </div>
         <div class="col s10">
-        <h3> Nombre de work item </h3>
+        <div class="row valign-wrapper">
+                <div class="col s1">
+                      <a href="{% url 'proyectos:detalle_proyecto' workitem.proyecto.id %}" class="btn-floating waves-effect waves-light black"><i class="material-icons">arrow_back</i></a>
+                </div>
+                <div class="col s11">
+                    <h5> Proyecto: {{ workitem.proyecto }}</h5>
+                </div>
+        </div>
+        <h3> Work Item: {{ workitem }} </h3>
         <hr>
         <div class="row valign-wrapper">
             <div class="col s6">
@@ -24,37 +32,27 @@
                     <i class="large material-icons">add</i>
                   </a>
                   <ul>
-                      <li><a class="btn-floating grey lighten-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Agregar defecto"><i class="material-icons">broken_image</i></a></li>
+                      <li><a class="btn-floating grey lighten-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Agregar defecto"><i class="material-icons">bug_report</i></a></li>
                       <li><a class="btn-floating blue-grey darken-4 tooltipped btn modal-trigger" href="#modal_task" data-position="bottom" data-delay="50" data-tooltip="Agregar task"><i class="material-icons">create</i></a></li>
                   </ul>
                 </div>
             </div>
         </div>
-         <ul class="collection">
-             {% for task in tasks %}
-                <li class="row collection-item">
-                    <div class="col s6">
-                         Tu putísima madre
+         <div class="collection">
+             {% for task in workitem.task_set.all %}
+                <a href="{% url 'tasks:ver_task' task.id %}" class="row collection-item {% if task.estado == 0 %} red-text {% elif task.estado == 1%} yellow-text {% elif task.estado == 2%} blue-text {% else %} green-text{% endif %}">
+                    <div class="col s4">
+                        {{ task }}
                     </div>
-                </li>
-             {% endfor %}
-        </ul>
+                    <div class="col s4">
+                        {{ task.get_estado_display }}
+                    </div>
+                    <div class="col s4">
 
-         <ul class="collection">
-           <li class="row collection-item">
-                        <div class="col s12 l4 m4">
-                             Task
-                        </div>
-                        <div class="col hide-on-small-only l4 m4">
-                             Qué estado está
-                        </div>
-                        <div class="col hide-on-small-only l4 m4">
-                             Quién verga lo está haciendo
-                        </div>
-                     </li>
-                  <li class="collection-item">Alvin</li>
-                  <li class="collection-item">Alvin</li>
-        </ul>
+                    </div>
+                </a>
+             {% endfor %}
+        </div>
         <hr>
         <h4>Resumen</h4>
 

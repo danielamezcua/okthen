@@ -14,9 +14,16 @@ class Task(models.Model):
     personas = models.ManyToManyField(Persona, through='PersonaTaskRelacion')
     work_item = models.ForeignKey(WorkItem, on_delete=models.CASCADE)
 
+    def obtener_logs(self):
+        logs = PersonaTaskRelacion.objects.filter(task=self)
+        return logs
+
+    def __str__(self):
+        return self.descripcion
+
 class PersonaTaskRelacion(models.Model):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    tiempo = models.DurationField()
+    tiempo = models.DecimalField(max_digits=6, decimal_places=3)
     inicio = models.DateTimeField()
     fin = models.DateTimeField()

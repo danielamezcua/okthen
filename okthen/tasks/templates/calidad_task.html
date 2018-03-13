@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block header %} {% include 'header.html' %}{% endblock %}
+{% block sidenav %} {% include 'sidenav.html' %}{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col s1"></div>
+        <div class="col s10">
+            <div class="row">
+                <div class="col s1">
+                      <a href="{% url 'tasks:ver_task' task.id %}" class="btn-floating waves-effect waves-light black"><i class="material-icons">arrow_back</i></a>
+                </div>
+                <div class="col s11">
+                    <h5> Task: {{ task }}</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s10">
+                    <h3> Calidad: {{ task }}</h3>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="col s6">
+                  <button class="btn waves-effect waves-light black" type="submit" name="action">Agregar defecto
+                    <i class="material-icons right">bug_report</i>
+                  </button>
+                </div>
+                <div class="col s6">
+                  <a href="{% url 'tasks:terminar_task' task.id %}" class="btn waves-effect waves-light black right-align" type="submit" name="action">Terminar
+                    <i class="material-icons right">send</i>
+                  </a>
+                </div>
+            </div>
+        </div>
+        <div class="col s1"></div>
+    </div>
+{% endblock %}

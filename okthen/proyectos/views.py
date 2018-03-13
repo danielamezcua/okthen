@@ -8,8 +8,9 @@ def detalle_proyecto(request, id_proyecto):
     valid = validate(request)
     if valid == True:
         proyecto = get_object_or_404(Proyecto, pk=id_proyecto)
+        workitems = proyecto.workitem_set.all()
         form_work_item = WorkItemForm()
-        return render(request, 'detalle_proyecto.html', {'form_work_item':form_work_item, 'proyecto':proyecto})
+        return render(request, 'detalle_proyecto.html', {'form_work_item':form_work_item, 'proyecto':proyecto, 'workitems':workitems})
     return valid
 
 def index(request):

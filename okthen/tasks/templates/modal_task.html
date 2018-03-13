@@ -2,7 +2,7 @@
   <div id="modal_task" class="modal">
     <div class="modal-content">
       <h4>Nueva task </h4>
-        <form method="POST">
+        <form action="{% url 'tasks:agregar_task' workitem.id %}" method="POST">
             {% csrf_token %}
             <div class="row">
                 <div class="input-field">

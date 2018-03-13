@@ -10,11 +10,11 @@
     <div class="row">
     <div class="col s1"> </div>
     <div class="col s10">
-    <h1> Nombre de proshecto </h1>
+    <h2> Proyecto {{ proyecto }} </h2>
     <hr>
     <div class="row valign-wrapper">
         <div class="col s6">
-            <h3>Work Items</h3>
+            <h4>Work Items</h4>
         </div>
         <div class="col s6 right-align">
              <div class="fixed-action-btn" >
@@ -24,56 +24,39 @@
              </div>
         </div>
     </div>
-      <ul class="collapsible">
+      <ul class="collapsible popout">
         {% for workitem in workitems %}
             <li>
               <div class="collapsible-header">
-                  <div class="row">
-                     <i class="material-icons col s1">filter_drama</i>First
-                  </div>
+                     <i class="material-icons">arrow_drop_down</i>
+                          {{ workitem }}
               </div>
               <div class="collapsible-body">
-                    <ul class="collection">
-                      <li class="row collection-item">
-                        <div class="col s6">
-                             Tu putísima madre
-                        </div>
-                      </li>
-                      <li class="collection-item">Alvin</li>
-                      <li class="collection-item">Alvin</li>
-                      <li class="collection-item">Alvin</li>
-                        <li class="collection-item">
-                            <i class="material-icons col s1">add</i>
-                            Agregar task
-                        </li>
-                    </ul>
+                    <div class="collection">
+                        {% for task in workitem.task_set.all %}
+                            <a href="{% url 'tasks:ver_task' task.id %}" class="row collection-item {% if task.estado == 0 %} red-text {% elif task.estado == 1%} yellow-text {% elif task.estado == 2%} blue-text {% else %} green-text{% endif %}">
+                                <div class="col s12 l4 m4">
+                                     {{ task }}
+                                </div>
+                                 <div class="col hide-on-small-only l4 m4 ">
+                                    {{ task.get_estado_display }}
+                                 </div>
+                                <div class="col hide-on-small-only l4 m4">
+                                    Quién lo está haciendo / ha hecho
+                                </div>
+                            </a>
+                        {% endfor %}
+                        <a href="{% url 'workitems:ver_workitem' workitem.id %}" class="collection-item black white-text">
+                            <div class="valign-wrapper">
+                                <i class="material-icons">add</i> Ver más
+                            </div>
+                        </a>
+                    </div>
               </div>
             </li>
         {% endfor %}
-            <li>
-              <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
-              <div class="collapsible-body">
-                    <ul class="collection">
-                        <li class="row collection-item">
-                            <div class="col s12 l4 m4">
-                                 Task
-                            </div>
-                            <div class="col hide-on-small-only l4 m4">
-                                 Qué estado está
-                            </div>
-                            <div class="col hide-on-small-only l4 m4">
-                                 Quién verga lo está haciendo
-                            </div>
-                         </li>
-                      <li class="collection-item">Alvin</li>
-                      <li class="collection-item">Alvin</li>
-                        <li class="black white-text collection-item">
-                            <i class="material-icons col s1">add</i>
-                            Agregar task
-                        </li>
-                    </ul>
-              </div>
-            </li>
+      <li>
+    </li>
       </ul>
     </div>
     <div class="col s1"> </div>

@@ -5,28 +5,36 @@
     <div class="row">
         <div class="col s1"></div>
         <div class="col s10">
-            <div class="row">
+            <div class="row valign-wrapper">
                 <div class="col s1">
-                      <a class="btn-floating waves-effect waves-light black"><i class="material-icons">arrow_back</i></a>
+                      <a href="{% url 'workitems:ver_workitem' task.work_item.id %}" class="btn-floating waves-effect waves-light black"><i class="material-icons">arrow_back</i></a>
                 </div>
                 <div class="col s11">
-                    <h5> Nombre Work Item</h5>
+                    <h5> Work Item: {{ task.work_item }}</h5>
                 </div>
             </div>
-            <div class="row">
+            <div class="row valign-wrapper">
                 <div class="col s6">
-                    <h3>Nombre task</h3>
+                    <h3> {{ task }}</h3>
+                </div>
+                <div class="col s6 right-align">
+                    {% if task.estado == 2 %}
+                          <a href="{% url 'tasks:calidad_task' task.id %}" class="btn waves-effect waves-light black" type="submit" name="action">Calidad
+                            <i class="material-icons right">send</i>
+                          </a>
+                    {% endif %}
+                    <a class="btn-floating grey lighten-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Agregar defecto"><i class="material-icons">bug_report</i></a>
                 </div>
             </div>
             <hr>
             <br>
             <div class="row">
                 <div class="col s6 right-align">
-                      <a class="btn-floating btn-large green waves-effect waves-light "><i class="material-icons">play_arrow</i></a>
+                      <a id="empezar" class="btn-floating btn-large green waves-effect waves-light "><i class="material-icons">play_arrow</i></a>
                 </div>
 
                 <div class="col s6 left-align">
-                    <a class="btn-floating btn-large red waves-effect waves-light modal-trigger" href="#modal_acabar_task"><i class="material-icons">stop</i></a>
+                    <a id="terminar" class="btn-floating btn-large red waves-effect waves-light modal-trigger disabled" href="#modal_acabar_task"><i class="material-icons">stop</i></a>
                 </div>
 
                 <div class="col s6 right-align">
@@ -41,24 +49,39 @@
             <div class="row">
                 <h5> Logs </h5>
                 <hr>
+
                 <ul class="collection">
-                    {% for log in logs %}
-                        {# something #}
-                    {% endfor %}
-                     <li class="row collection-item">
-                        <div class="col s3">
-                            Fecha
-                        </div>
-                         <div class="col s3">
-                            Tiempo
-                        </div>
-                         <div class="col s3">
-                            Quién
-                        </div>
-                         <div class="col s3">
-                            Completado
-                        </div>
+                    <li class="row collection-item black white-text">
+                            <div class="col s3">
+                                Fecha inicio
+                            </div>
+                             <div class="col s3">
+                                Fecha fin
+                            </div>
+                             <div class="col s3">
+                                Tiempo
+                            </div>
+                             <div class="col s3">
+                                Quién
+                            </div>
                     </li>
+                    {% for log in task.obtener_logs %}
+                        <li class="row collection-item">
+                            <div class="col s3">
+                                {{ log.inicio }}
+                            </div>
+                             <div class="col s3">
+                                 {{  log.fin  }}
+                            </div>
+                             <div class="col s3">
+                                {{ log.tiempo }} horas
+                            </div>
+                            <div class="col s3">
+                                {{ log.persona }}
+                            </div>
+                        </li>
+                    {% endfor %}
+
                 </ul>
             </div>
         </div>
@@ -74,5 +97,23 @@
             $('select').formSelect();
             $(".dropdown-content>li>span").css("color", "#000000");
         });
+
+        $('#empezar').click(function(){
+            //2018-03-02T09:00
+            var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+            var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -5);
+            $('#id_inicio').val(localISOTime);
+            $(this).addClass("disabled");
+            $('#terminar').removeClass('disabled');
+        });
+
+        $('#terminar').click(function(){
+            //2018-03-02T09:00
+            var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+            var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -5);
+            $('#id_fin').val(localISOTime);
+        });
+
+
     </script>
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block header %} {% include 'base.html'%} {% endblock %}
+{% block header %} {% include 'header.html'%} {% endblock %}
 {% block sidenav %} {% include 'sidenav.html' %}{% endblock %}
 {% block content %}
     <div class="row">
@@ -16,7 +16,7 @@
 
             <div class="collection">
             {% for proyecto in proyectos %}
-                <a class="collection-item black-text" href="{% url 'proyectos:detalle_proyecto' proyecto.id %}" class="collection-item">{{ proyecto }}</a>
+                <a class="collection-item black-text" href="{% url 'proyectos:detalle_proyecto' proyecto.id %}">{{ proyecto }}</a>
             {% endfor %}
             </div>
         </div>
