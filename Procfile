@@ -1,2 +1,2 @@
-release: python manage.py migrate
+release: 'cd ./okthen/ && python manage.py migrate'
 web: sh -c 'cd ./okthen/ && exec gunicorn okthen.wsgi --log-file -'
