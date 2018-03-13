@@ -100,7 +100,7 @@ WSGI_APPLICATION = 'okthen.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'okthen',
@@ -109,6 +109,11 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     }
+}"""
+DATABASES = {
+    'default': dj_database_url.config(
+        default= dj_database_url.config('DATABASE_URL')
+    )
 }
 
 
