@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404, redirect,reverse
-from .forms import AcabarTask, ModalTask
-from .models import Task
+from .forms import AcabarTask, ModalTask, DefectoForm
+from .models import Task, InfoDefecto
 from okthen.sessions import validate
 from workitems.models import WorkItem
 from personas.models import Persona
@@ -11,8 +11,9 @@ def ver_task(request, id_task):
     valid = validate(request)
     if valid == True:
         task = get_object_or_404(Task, pk=id_task)
+        form_defecto = DefectoForm()
         form_acabar_task = AcabarTask()
-        return render(request, 'detalle_task.html', {'task':task,'form_acabar_task':form_acabar_task})
+        return render(request, 'detalle_task.html', {'task':task,'form_acabar_task':form_acabar_task, 'form_defecto':form_defecto})
     return valid
 
 def agregar_task(request, id_workitem):
@@ -69,5 +70,24 @@ def terminar_task(request,id_task):
         task.save()
         return redirect(reverse('workitems:ver_workitem', kwargs={'id_workitem':task.work_item.id}))
     return valid
+
+def agregar_defecto(request):
+    valid = validate(request)
+    if valid == True:
+        form = DefectoForm(request.POST)
+        if form.is_valid():
+            descripcion = form.cleaned_data['descripcion']
+            tiempo_estimado = form.cleaned_data['tiempo_estimado']
+            workitem = form.cleaned_data['workitem']
+            t = Task.objects.create(descripcion=descripcion, tiempo_estimado=tiempo_estimado, work_item=workitem)
+            t.save()
+            persona = get_object_or_404(Persona, nombre=request.session['user'])
+            task_asociado = form.cleaned_data['task']
+            d = InfoDefecto.objects.create(persona=persona, task_asociado=task_asociado)
+            d.save()
+            t.informacion_defecto = d
+            t.save()
+
+    return redirect(request.META.get('HTTP_REFERER'))
 
 

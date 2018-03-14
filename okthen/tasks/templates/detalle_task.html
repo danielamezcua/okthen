@@ -23,7 +23,7 @@
                             <i class="material-icons right">send</i>
                           </a>
                     {% endif %}
-                    <a class="btn-floating grey lighten-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Agregar defecto"><i class="material-icons">bug_report</i></a>
+                    <a class="btn-floating grey lighten-1 tooltipped modal-trigger" href="#modal_defecto" data-position="bottom" data-delay="50" data-tooltip="Agregar defecto"><i class="material-icons">bug_report</i></a>
                 </div>
             </div>
             <hr>
@@ -89,6 +89,7 @@
     </div>
 
     {% include 'modal_acabar_task.html' %}
+    {% include 'defecto_task_modal.html' %}
 {% endblock %}
 {% block js %}
     <script>

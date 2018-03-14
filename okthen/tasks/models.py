@@ -8,9 +8,9 @@ class Task(models.Model):
                       (2, "Calidad"),
                       (3, "Terminada"))
     descripcion = models.CharField(blank=False,null=True, max_length=600)
-    tiempo_estimado = models.DurationField()
+    tiempo_estimado = models.DecimalField(max_digits=6, decimal_places=3)
     estado = models.IntegerField(choices=ESTADO_CHOICES, default=0)
-    defecto = models.BooleanField(default=False)
+    informacion_defecto = models.ForeignKey('tasks.InfoDefecto', on_delete=models.CASCADE, null=True)
     personas = models.ManyToManyField(Persona, through='PersonaTaskRelacion')
     work_item = models.ForeignKey(WorkItem, on_delete=models.CASCADE)
 
@@ -20,6 +20,15 @@ class Task(models.Model):
 
     def __str__(self):
         return self.descripcion
+
+class InfoDefecto(models.Model):
+    #Quién encontró el defecto
+    persona = models.ForeignKey(Persona, on_delete=models.CASCADE, related_name="persona_detecta_defecto")
+    #Task que tiene el defecto
+    task_asociado = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_origen_defecto", null=True)
+    #Task donde se encontró el defcto
+    task_encontrado = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_encuentra_defecto", null=True)
+
 
 class PersonaTaskRelacion(models.Model):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)

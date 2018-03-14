@@ -32,7 +32,7 @@
                     <i class="large material-icons">add</i>
                   </a>
                   <ul>
-                      <li><a class="btn-floating grey lighten-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Agregar defecto"><i class="material-icons">bug_report</i></a></li>
+                      <li><a class="btn-floating grey lighten-1 tooltipped modal-trigger"  href="#modal_defecto"data-position="bottom" data-delay="50" data-tooltip="Agregar defecto"><i class="material-icons">bug_report</i></a></li>
                       <li><a class="btn-floating blue-grey darken-4 tooltipped btn modal-trigger" href="#modal_task" data-position="bottom" data-delay="50" data-tooltip="Agregar task"><i class="material-icons">create</i></a></li>
                   </ul>
                 </div>
@@ -62,6 +62,7 @@
 
     <!--Modals-->
     {% include 'modal_task.html' %}
+    {% include 'defecto_task_modal.html' %}
 {% endblock %}
 
 {% block js %}
@@ -75,6 +76,21 @@
 
              //Modals
             $('.modal').modal();
+            $('#id_workitem').val({{ workitem.id }});
+            $('#id_task').formSelect();
+            $('#id_workitem').formSelect();
         });
+
+        $('#id_workitem').change(function(){
+           var workitem = $('#id_workitem').val();
+           $.ajax({
+               url:'{% url 'workitems:obtener_tasks_work_item' %}',
+               data:{'workitem': workitem},
+               success: function(response){
+                   $('#id_task').html(response);
+                   $('#id_task').formSelect();
+               }
+           });
+       });
     </script>
 {% endblock %}

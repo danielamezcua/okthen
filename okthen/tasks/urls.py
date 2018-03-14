@@ -10,5 +10,6 @@ urlpatterns = [
     path('ver_task/<int:id_task>', views.ver_task, name='ver_task'),
     path('log_task/<int:id_task>', views.log_task, name='log_task'),
     path('calidad_task/<int:id_task>', views.calidad_task, name='calidad_task'),
-    path('terminar_task/<int:id_task>', views.terminar_task, name='terminar_task')
+    path('terminar_task/<int:id_task>', views.terminar_task, name='terminar_task'),
+    path('agregar_defecto/', views.agregar_defecto, name='agregar_defecto'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
