@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block header %} {% include 'header.html' %} {% endblock %}
+{% block sidenav %} {% include 'sidenav.html' %} {% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col s1"></div>
+        <div class="col s10">
+            <h5> Logs - {{ persona }}</h5>
+            <hr>
+
+            <ul class="collection">
+                <li class="row collection-item black white-text">
+                        <div class="col s3">
+                            Work Item - Task
+                        </div>
+                         <div class="col s3">
+                             Inicio
+                        </div>
+                         <div class="col s3">
+                           Fin
+                        </div>
+                         <div class="col s3">
+                            Tiempo
+                        </div>
+                </li>
+                {% for log in logs %}
+                    <li class="row collection-item">
+                        <div class="col s3">
+                            {{ log.task.work_item }} - {{ log.task }}
+                        </div>
+                        <div class="col s3">
+                            {{ log.inicio }}
+                        </div>
+                         <div class="col s3">
+                             {{  log.fin  }}
+                        </div>
+                         <div class="col s3">
+                            {{ log.tiempo }} horas
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col s1"></div>
+    </div>
+{% endblock %}

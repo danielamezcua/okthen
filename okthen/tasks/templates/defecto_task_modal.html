@@ -1,0 +1,32 @@
+<!-- Modal Agregar task -->
+  <div id="modal_defecto" class="modal">
+    <div class="modal-content">
+      <h4>Nuevo defecto </h4>
+        <form action="{% url 'tasks:agregar_defecto' %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <label for="{{ form_defecto.descripcion.id_for_label }}"> Descripcion </label>
+                    {{ form_defecto.descripcion }}
+                </div>
+                <div class="col s12 m6 l6">
+                    <label for="{{ modal_defecto.tiempo_estimado.id_for_label }}"> Tiempo estimado (horas) </label>
+                    {{ form_defecto.tiempo_estimado }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <label for="{{ form_defecto.workitem.id_for_label }}"> Work Item </label>
+                    {{ form_defecto.workitem }}
+                </div>
+                <div class="col s12 m6 l6">
+                    <label for="{{ form_defecto.task.id_for_label }}"> Task </label>
+                    {{ form_defecto.task }}
+                </div>
+            </div>
+            <div class="col s12 m3 l3">
+                <input class="btn black" value="Agregar defecto" type="submit">
+            </div>
+        </form>
+    </div>
+  </div>

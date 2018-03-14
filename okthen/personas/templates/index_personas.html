@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block header %} {% include 'header.html' %} {% endblock %}
+{% block sidenav %}  {% include 'sidenav.html' %} {% endblock %}
+{% block content %}
+
+    <div class="row">
+    <div class="col s1"></div>
+    <div class="col s10">
+        <h2>Miembros de la organización</h2>
+
+      <div class="collection">
+          {% for persona in personas %}
+                <a href="{% url 'personas:resumen' persona.id %}" class="collection-item">{{ persona }}</a>
+          {% endfor %}
+      </div>
+
+    </div>
+    <div class="col s1"></div>
+    </div>
+{% endblock %}
