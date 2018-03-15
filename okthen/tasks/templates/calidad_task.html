@@ -22,7 +22,7 @@
 
             <div class="row">
                 <div class="col s6">
-                  <button class="btn waves-effect waves-light black" type="submit" name="action">Agregar defecto
+                  <button class="btn waves-effect waves-light black modal-trigger"  href="#modal_defecto" type="submit" name="action">Agregar defecto
                     <i class="material-icons right">bug_report</i>
                   </button>
                 </div>
@@ -35,4 +35,19 @@
         </div>
         <div class="col s1"></div>
     </div>
+    {% include 'defecto_task_modal.html' %}
+{% endblock %}
+
+
+{% block js %}
+    <script>
+         $(document).ready(function(){
+                $('.modal').modal();
+             $('#id_workitem').val({{ task.work_item.id }});
+            $('#id_task').val({{ task.id }});
+
+                $('select').formSelect();
+                $(".dropdown-content>li>span").css("color", "#000000");
+        });
+    </script>
 {% endblock %}

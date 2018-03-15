@@ -58,8 +58,9 @@ def log_task(request, id_task):
 def calidad_task(request, id_task):
     valid = validate(request)
     if valid == True:
+        form_defecto = DefectoForm()
         task = get_object_or_404(Task, pk=id_task)
-        return render(request, 'calidad_task.html', {'task':task})
+        return render(request, 'calidad_task.html', {'task':task, 'form_defecto':form_defecto})
     return valid
 
 def terminar_task(request,id_task):
