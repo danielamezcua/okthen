@@ -13,6 +13,7 @@ class Task(models.Model):
     informacion_defecto = models.ForeignKey('tasks.InfoDefecto', on_delete=models.CASCADE, null=True)
     personas = models.ManyToManyField(Persona, through='PersonaTaskRelacion')
     work_item = models.ForeignKey(WorkItem, on_delete=models.CASCADE)
+    fecha_termino = models.DateField(null= True)
 
     def obtener_logs(self):
         logs = PersonaTaskRelacion.objects.filter(task=self)

@@ -67,6 +67,7 @@ def terminar_task(request,id_task):
     if valid == True:
         task = get_object_or_404(Task, pk=id_task)
         task.estado = 3
+        task.fecha_termino = datetime.datetime.now()
         task.save()
         return redirect(reverse('workitems:ver_workitem', kwargs={'id_workitem':task.work_item.id}))
     return valid
