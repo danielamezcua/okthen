@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import dj_database_url
+
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,7 +28,7 @@ SECRET_KEY = '+oxre_nxjfoyfy(hssq#$g27ntqky(u*6$qn8d5s^8el(b1om6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cavelabs.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['cavelabss.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -99,16 +101,9 @@ WSGI_APPLICATION = 'okthen.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'okthen',
-        'USER': 'okthen',
-        'PASSWORD': 'X0#kHX@3Z',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
+DATABASES['default'] = dj_database_url.config(
+    default='DATABASE_URL_HERE'
+)
 
 
 # Password validation
