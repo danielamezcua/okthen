@@ -100,10 +100,17 @@ WSGI_APPLICATION = 'okthen.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-DATABASES['default'] = dj_database_url.config(
-    default='DATABASE_URL_HERE'
-)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'okthen',
+        'USER': 'okthen',
+        'PASSWORD': 'X0#kHX@3Z',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation
