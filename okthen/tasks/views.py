@@ -92,4 +92,24 @@ def agregar_defecto(request):
 
     return redirect(request.META.get('HTTP_REFERER'))
 
+def agregar_defecto_encontrado(request,id_task):
+    valid = validate(request)
+    if valid == True:
+        form = DefectoForm(request.POST)
+        if form.is_valid():
+            descripcion = form.cleaned_data['descripcion']
+            tiempo_estimado = form.cleaned_data['tiempo_estimado']
+            workitem = form.cleaned_data['workitem']
+            t = Task.objects.create(descripcion=descripcion, tiempo_estimado=tiempo_estimado, work_item=workitem)
+            t.save()
+            persona = get_object_or_404(Persona, nombre=request.session['user'])
+            task_asociado = form.cleaned_data['task']
+            task_encontrado = get_object_or_404(Task, pk=id_task)
+            d = InfoDefecto.objects.create(persona=persona, task_asociado=task_asociado, task_encontrado=task_encontrado)
+            d.save()
+            t.informacion_defecto = d
+            t.save()
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
 

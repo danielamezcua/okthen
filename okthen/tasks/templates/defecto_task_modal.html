@@ -2,7 +2,7 @@
   <div id="modal_defecto" class="modal">
     <div class="modal-content">
       <h4>Nuevo defecto </h4>
-        <form action="{% url 'tasks:agregar_defecto' %}" method="POST">
+        <form action="  {% if task %} {% url 'tasks:agregar_defecto_encontrado' task.id %} {% else %}{% url 'tasks:agregar_defecto' %}{% endif %}" method="POST">
             {% csrf_token %}
             <div class="row">
                 <div class="col s12 m6 l6">
