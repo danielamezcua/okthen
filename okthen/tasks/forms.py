@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from .models import Task, PersonaTaskRelacion
 from workitems.models import WorkItem
+from proyectos.models import Proyecto
 from okthen import settings
 import datetime
 
@@ -37,6 +38,17 @@ class DefectoForm(forms.Form):
     workitems = WorkItem.objects.all()
     tasks = Task.objects.all()
     workitem = forms.ModelChoiceField(workitems)
-    task = forms.ModelChoiceField(tasks)
+    task = forms.ModelChoiceField(tasks, required=False)
     descripcion = forms.CharField(max_length=200)
     tiempo_estimado = forms.DecimalField(max_digits=6, decimal_places=3, min_value=0)
+
+    def __init__(self, *args, **kwargs):
+        proyecto = kwargs.pop('proyecto',None)
+
+        super(DefectoForm, self).__init__(*args, **kwargs)
+
+        if proyecto:
+            # Set choices from argument.
+            self.fields['workitem'].queryset = WorkItem.objects.filter(proyecto=proyecto)
+            self.fields['task'].queryset = Task.objects.filter(work_item__in=Proyecto.objects.get(pk=proyecto.id).workitem_set.all())
+

@@ -11,7 +11,7 @@ def ver_task(request, id_task):
     valid = validate(request)
     if valid == True:
         task = get_object_or_404(Task, pk=id_task)
-        form_defecto = DefectoForm()
+        form_defecto = DefectoForm(proyecto=task.work_item.proyecto)
         form_acabar_task = AcabarTask()
         return render(request, 'detalle_task.html', {'task':task,'form_acabar_task':form_acabar_task, 'form_defecto':form_defecto})
     return valid

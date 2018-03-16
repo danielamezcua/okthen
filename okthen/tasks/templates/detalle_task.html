@@ -95,6 +95,8 @@
     <script>
         $(document).ready(function(){
             $('.modal').modal();
+            $('#id_workitem').val({{ task.work_item.id }});
+            $('#id_task').val({{ task.id }});
             $('select').formSelect();
             $(".dropdown-content>li>span").css("color", "#000000");
         });

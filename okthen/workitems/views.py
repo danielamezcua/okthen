@@ -11,7 +11,7 @@ def ver_workitem(request, id_workitem):
     if valid == True:
         workitem = get_object_or_404(WorkItem, pk=id_workitem)
         form_task = ModalTask()
-        form_defecto = DefectoForm()
+        form_defecto = DefectoForm(proyecto=workitem.proyecto)
         return render(request, 'detalle_work_item.html', {'workitem':workitem,'form_task':form_task, 'form_defecto':form_defecto})
     return valid
 

@@ -101,8 +101,12 @@ WSGI_APPLICATION = 'okthen.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'okthen',
+        'USER': 'okthen',
+        'PASSWORD': 'X0#kHX@3Z',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
