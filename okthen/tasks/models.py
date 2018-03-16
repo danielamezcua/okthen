@@ -1,7 +1,7 @@
 from django.db import models
 from personas.models import Persona
 from workitems.models import WorkItem
-
+#try
 class Task(models.Model):
     ESTADO_CHOICES = ((0,'Pendiente'),
                       (1,'En proceso'),
