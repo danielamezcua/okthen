@@ -28,7 +28,7 @@ SECRET_KEY = '+oxre_nxjfoyfy(hssq#$g27ntqky(u*6$qn8d5s^8el(b1om6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cavelabss.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['cavelabs.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
