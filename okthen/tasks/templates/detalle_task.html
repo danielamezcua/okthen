@@ -15,7 +15,7 @@
             </div>
             <div class="row valign-wrapper">
                 <div class="col s6">
-                    <h3> {{ task }}</h3>
+                    <h3> {{ task }}{% if task.informacion_defecto %} - <b>Defecto</b> {% endif %}</h3>
                 </div>
                 <div class="col s6 right-align">
                     {% if task.estado == 2 %}
@@ -81,9 +81,57 @@
                             </div>
                         </li>
                     {% endfor %}
+                </ul>
+            </div>
+
+            <hr>
+            {% if not task.informacion_defecto %}
+            <div class="row">
+                <h5> Defectos </h5>
+                <hr>
+                <ul class="collection">
+                    <li class="row collection-item black white-text">
+                            <div class="col s4">
+                                Nombre defecto
+                            </div>
+                             <div class="col s4">
+                                Fecha fin
+                            </div>
+                             <div class="col s4">
+                                Tiempo
+                            </div>
+                    </li>
+
+                    {% for defecto in task.obtener_defectos %}
+                        <li class="row collection-item">
+                            <div class="col s4">
+                                {{ defecto.descripcion }}
+                            </div>
+                             <div class="col s4">
+                                 {% if defecto.fecha_termino %}{{ defecto.fecha_termino|date:'d/m/y'}} {% else %} --- {% endif %}
+                            </div>
+                             <div class="col s4">
+                                {% if defecto.fecha_termino %} {{ defecto.obtener_tiempo }} {% else %} --- {% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}
 
                 </ul>
             </div>
+            {% endif %}
+        </div>
+        <div class="col s1"></div>
+    </div>
+    <div class="row">
+        <div class="col s1"> </div>
+        <div class="col s12 m4 l4">
+            <h6> Tiempo sin defectos: {{ task.obtener_tiempo }}</h6>
+        </div>
+        <div class="col s12 m4 l3">
+            <h6> Tiempo defectos: {{ task.obtener_tiempo_defectos }} </h6>
+        </div>
+        <div class="col s12 m4 l3">
+            <h6> Tiempo total: {{ task.obtener_tiempo_total }}</h6>
         </div>
         <div class="col s1"></div>
     </div>
@@ -99,6 +147,7 @@
             $('#id_task').val({{ task.id }});
             $('select').formSelect();
             $(".dropdown-content>li>span").css("color", "#000000");
+
         });
 
         $('#empezar').click(function(){
@@ -116,6 +165,18 @@
             var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -5);
             $('#id_fin').val(localISOTime);
         });
+
+        $('#id_workitem').change(function(){
+           var workitem = $('#id_workitem').val();
+           $.ajax({
+               url:'{% url 'workitems:obtener_tasks_work_item' %}',
+               data:{'workitem': workitem},
+               success: function(response){
+                   $('#id_task').html(response);
+                   $('#id_task').formSelect();
+               }
+           });
+       });
 
 
     </script>

@@ -1,6 +1,8 @@
 from django.db import models
 from personas.models import Persona
 from workitems.models import WorkItem
+from django.db.models import Sum, F
+from decimal import Decimal
 #try
 class Task(models.Model):
     ESTADO_CHOICES = ((0,'Pendiente'),
@@ -18,6 +20,23 @@ class Task(models.Model):
     def obtener_logs(self):
         logs = PersonaTaskRelacion.objects.filter(task=self)
         return logs
+
+    def obtener_defectos(self):
+        defectos = Task.objects.filter(informacion_defecto__isnull=False).filter(informacion_defecto__task_asociado=self)
+        return defectos
+
+    def obtener_tiempo(self):
+        return PersonaTaskRelacion.objects.filter(task=self).aggregate(total=Sum('tiempo'))['total'] or 0
+
+    def obtener_tiempo_defectos(self):
+        defectos = self.obtener_defectos()
+        tiempo = Decimal(0)
+        for defecto in defectos:
+            tiempo+=defecto.obtener_tiempo()
+        return tiempo or 0
+
+    def obtener_tiempo_total(self):
+        return self.obtener_tiempo_defectos() + self.obtener_tiempo()
 
     def __str__(self):
         return self.descripcion

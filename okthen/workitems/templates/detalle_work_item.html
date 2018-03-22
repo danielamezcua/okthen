@@ -77,6 +77,15 @@
              //Modals
             $('.modal').modal();
             $('#id_workitem').val({{ workitem.id }});
+            var workitem = $('#id_workitem').val();
+           $.ajax({
+               url:'{% url 'workitems:obtener_tasks_work_item' %}',
+               data:{'workitem': workitem},
+               success: function(response){
+                   $('#id_task').html(response);
+                   $('#id_task').formSelect();
+               }
+           });
             $('#id_task').formSelect();
             $('#id_workitem').formSelect();
         });
@@ -92,5 +101,6 @@
                }
            });
        });
+
     </script>
 {% endblock %}

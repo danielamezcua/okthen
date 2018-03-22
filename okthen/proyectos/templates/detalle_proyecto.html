@@ -33,7 +33,13 @@
               </div>
               <div class="collapsible-body">
                     <div class="collection">
+                        <a class="collection-item grey white-text">
+                            <div class="valign-wrapper">
+                                <i class="material-icons">edit</i> Tasks
+                            </div>
+                        </a>
                         {% for task in workitem.task_set.all %}
+                            {% if not task.informacion_defecto %}
                             <a href="{% url 'tasks:ver_task' task.id %}" class="row collection-item {% if task.estado == 0 %} red-text {% elif task.estado == 1%} yellow-text {% elif task.estado == 2%} blue-text {% else %} green-text{% endif %}">
                                 <div class="col s12 l4 m4">
                                      {{ task }}
@@ -45,6 +51,27 @@
                                     Quién lo está haciendo / ha hecho
                                 </div>
                             </a>
+                            {% endif %}
+                        {% endfor %}
+                        <a class="collection-item grey white-text">
+                            <div class="valign-wrapper">
+                                <i class="material-icons">bug_report</i> Defectos
+                            </div>
+                        </a>
+                        {% for task in workitem.task_set.all %}
+                            {% if task.informacion_defecto %}
+                            <a href="{% url 'tasks:ver_task' task.id %}" class="row collection-item {% if task.estado == 0 %} red-text {% elif task.estado == 1%} yellow-text {% elif task.estado == 2%} blue-text {% else %} green-text{% endif %}">
+                                <div class="col s12 l4 m4">
+                                     {{ task }}
+                                </div>
+                                 <div class="col hide-on-small-only l4 m4 ">
+                                    {{ task.get_estado_display }}
+                                 </div>
+                                <div class="col hide-on-small-only l4 m4">
+                                    Quién lo está haciendo / ha hecho
+                                </div>
+                            </a>
+                            {% endif %}
                         {% endfor %}
                         <a href="{% url 'workitems:ver_workitem' workitem.id %}" class="collection-item black white-text">
                             <div class="valign-wrapper">

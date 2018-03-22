@@ -49,5 +49,16 @@
                 $('select').formSelect();
                 $(".dropdown-content>li>span").css("color", "#000000");
         });
+         $('#id_workitem').change(function(){
+           var workitem = $('#id_workitem').val();
+           $.ajax({
+               url:'{% url 'workitems:obtener_tasks_work_item' %}',
+               data:{'workitem': workitem},
+               success: function(response){
+                   $('#id_task').html(response);
+                   $('#id_task').formSelect();
+               }
+           });
+       });
     </script>
 {% endblock %}
