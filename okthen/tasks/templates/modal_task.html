@@ -5,9 +5,13 @@
         <form action="{% url 'tasks:agregar_task' workitem.id %}" method="POST">
             {% csrf_token %}
             <div class="row">
-                <div class="input-field">
+                <div class="input-field col s6">
                     <label for="{{ modal_task.descripcion.id_for_label }}"> Descripción </label>
                     {{ form_task.descripcion }}
+                </div>
+                <div class="input-field col s6">
+                    {{ form_task.tipo }}
+                    <label for="{{ modal_task.tipo.id_for_label }}"> Tipo </label>
                 </div>
             </div>
             <div class="row valign-wrapper">

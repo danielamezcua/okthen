@@ -16,7 +16,7 @@ class ModalTask(ModelForm):
     tiempo_estimado = forms.DecimalField(max_digits=6, decimal_places=3, min_value=0)
     class Meta:
         model = Task
-        fields = ['descripcion', 'tiempo_estimado']
+        fields = ['descripcion', 'tiempo_estimado', 'tipo',]
 
 
 class AcabarTask(ModelForm):
@@ -51,4 +51,3 @@ class DefectoForm(forms.Form):
             # Set choices from argument.
             self.fields['workitem'].queryset = WorkItem.objects.filter(proyecto=proyecto)
             self.fields['task'].queryset = Task.objects.filter(work_item__in=Proyecto.objects.get(pk=proyecto.id).workitem_set.all())
-

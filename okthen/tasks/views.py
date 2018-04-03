@@ -111,5 +111,3 @@ def agregar_defecto_encontrado(request,id_task):
             t.save()
 
     return redirect(request.META.get('HTTP_REFERER'))
-
-
