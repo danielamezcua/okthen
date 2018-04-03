@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
-
+{% block title %}
+    {{ workitem }}
+{% endblock %}
 {% block header %}
     {% include 'header.html' %}
 {% endblock %}
@@ -38,24 +40,56 @@
                 </div>
             </div>
         </div>
-         <div class="collection">
+        <table id="table_id" class="display">
+            <thead>
+                <tr>
+                    <th>Task </th>
+                    <th>Estado</th>
+                    <th>Tiempo planeado</th>
+                    <th>Núm. defectos</th>
+                    <th>Tiempo def.</th>
+                    <th>Tiempo s/ def.</th>
+                    <th>Tiempo c/ def.</th>
+                    <th>Error </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in workitem.obtener_tasks_sin_defectos %}
+                    <tr>
+                        <td><a href="{% url 'tasks:ver_task' task.id %}" class="row collection-item {% if task.estado == 0 %} red-text {% elif task.estado == 1%} yellow-text {% elif task.estado == 2%} blue-text {% else %} green-text{% endif %}">{{ task }}</a></td>
+                        <td> {{ task.get_estado_display }}</td>
+                        <td>{{ task.tiempo_estimado }}</td>
+                        <td>{{ task.contar_defectos }}</td>
+                        <td> {{ task.obtener_tiempo_defectos }}</td>
+                        <td>{{ task.obtener_tiempo }}</td>
+                        <td>{{ task.obtener_tiempo_total }}</td>
+                        <td>{{ task.obtener_error}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <hr>
+        <div class="row">
+            <div class="col s6"><h4> Defectos </h4></div>
+        </div>
+        <div class="collection">
              {% for task in workitem.task_set.all %}
-                <a href="{% url 'tasks:ver_task' task.id %}" class="row collection-item {% if task.estado == 0 %} red-text {% elif task.estado == 1%} yellow-text {% elif task.estado == 2%} blue-text {% else %} green-text{% endif %}">
-                    <div class="col s4">
-                        {{ task }}
-                    </div>
-                    <div class="col s4">
-                        {{ task.get_estado_display }}
-                    </div>
-                    <div class="col s4">
-
-                    </div>
-                </a>
+                 {% if task.informacion_defecto %}
+                    <a href="{% url 'tasks:ver_task' task.id %}" class="row collection-item {% if task.estado == 0 %} red-text {% elif task.estado == 1%} yellow-text {% elif task.estado == 2%} blue-text {% else %} green-text{% endif %}">
+                        <div class="col s4">
+                            {{ task }}
+                        </div>
+                        <div class="col s4">
+                            {{ task.get_estado_display }}
+                        </div>
+                        <div class="col s4">
+                        </div>
+                    </a>
+                 {% endif %}
              {% endfor %}
         </div>
-        <hr>
-        <h4>Resumen</h4>
 
+        <h4>Resumen</h4>
         </div>
         <div class="col s1"> </div>
     </div>
@@ -68,6 +102,12 @@
 {% block js %}
     <script>
         $(document).ready(function(){
+           $('#table_id').DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ]
+           } );
             $('.tooltipped').tooltip();
              var elem = document.querySelector('.fixed-action-btn');
              var instance = M.FloatingActionButton.init(elem, {

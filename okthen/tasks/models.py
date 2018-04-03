@@ -3,6 +3,7 @@ from personas.models import Persona
 from workitems.models import WorkItem
 from django.db.models import Sum, F
 from decimal import Decimal
+import math
 #try
 class Task(models.Model):
     ESTADO_CHOICES = ((0,'Pendiente'),
@@ -37,6 +38,12 @@ class Task(models.Model):
 
     def obtener_tiempo_total(self):
         return self.obtener_tiempo_defectos() + self.obtener_tiempo()
+
+    def contar_defectos(self):
+        return self.obtener_defectos().count()
+
+    def obtener_error(self):
+        return round(Decimal(math.fabs(self.tiempo_estimado - self.obtener_tiempo_total()))/self.tiempo_estimado,4)
 
     def __str__(self):
         return self.descripcion
