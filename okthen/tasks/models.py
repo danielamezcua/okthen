@@ -4,12 +4,18 @@ from workitems.models import WorkItem
 from django.db.models import Sum, F
 from decimal import Decimal
 import math
+
 #try
 class Task(models.Model):
     ESTADO_CHOICES = ((0,'Pendiente'),
                       (1,'En proceso'),
                       (2, "Calidad"),
                       (3, "Terminada"))
+    FASES = (('PLAN','PLAN'),
+            ('DESARROLLO','DESARROLLO'),
+            ('PRUEBAS', "PRUEBAS"),
+            ('POSTMORTEM', "POSTMORTEM"))
+
     descripcion = models.CharField(blank=False,null=True, max_length=600)
     tiempo_estimado = models.DecimalField(max_digits=6, decimal_places=3)
     estado = models.IntegerField(choices=ESTADO_CHOICES, default=0)
@@ -17,6 +23,7 @@ class Task(models.Model):
     personas = models.ManyToManyField(Persona, through='PersonaTaskRelacion')
     work_item = models.ForeignKey(WorkItem, on_delete=models.CASCADE)
     fecha_termino = models.DateField(null= True)
+    tipo = models.CharField(max_length=50, choices=FASES, null=True)
 
     def obtener_logs(self):
         logs = PersonaTaskRelacion.objects.filter(task=self)
@@ -55,7 +62,6 @@ class InfoDefecto(models.Model):
     task_asociado = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_origen_defecto", null=True)
     #Task donde se encontró el defcto
     task_encontrado = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_encuentra_defecto", null=True)
-
 
 class PersonaTaskRelacion(models.Model):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
