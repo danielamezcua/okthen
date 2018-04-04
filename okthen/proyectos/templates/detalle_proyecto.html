@@ -2,91 +2,136 @@
 {% block header %}
     {% include 'header.html' %}
 {% endblock %}
+{% block title %} {{ proyecto }} {% endblock %}
 {% block sidenav %}
     {% include 'sidenav.html' %}
 {% endblock %}
 
 {% block content %}
     <div class="row">
-    <div class="col s1"> </div>
-    <div class="col s10">
-    <h2> Proyecto {{ proyecto }} </h2>
-    <hr>
-    <div class="row valign-wrapper">
-        <div class="col s6">
-            <h4>Work Items</h4>
-        </div>
-        <div class="col s6 right-align">
-             <div class="fixed-action-btn" >
-                  <a class="btn-floating btn-large black modal-trigger" href="#agregar_work_item">
-                    <i class="large material-icons">add</i>
-                  </a>
-             </div>
-        </div>
-    </div>
-      <ul class="collapsible popout">
-        {% for workitem in workitems %}
-            <li>
-              <div class="collapsible-header">
-                     <i class="material-icons">arrow_drop_down</i>
-                          {{ workitem }}
-              </div>
-              <div class="collapsible-body">
-                    <div class="collection">
-                        <a class="collection-item grey white-text">
-                            <div class="valign-wrapper">
-                                <i class="material-icons">edit</i> Tasks
+        <div class="col s1"> </div>
+        <div class="col s10">
+            <h2> Proyecto {{ proyecto }} </h2>
+            <hr>
+            <div class="row">
+                <div class="col s12">
+                        <ul class="tabs">
+                            <li class="tab col s6"><a class="active" href="#workitems">Work Items</a></li>
+                            <li class="tab col s6"><a href="#defectos">Defectos</a></li>
+                        </ul>
+                </div>
+            </div>
+            <div class="col s12" id="workitems">
+            <div class="row valign-wrapper">
+                <div class="col s6">
+                    <h4>Work Items</h4>
+                </div>
+                <div class="col s6 right-align">
+                     <div class="fixed-action-btn" >
+                          <a class="btn-floating btn-large black modal-trigger" href="#agregar_work_item">
+                            <i class="large material-icons">add</i>
+                          </a>
+                     </div>
+                </div>
+            </div>
+              <ul class="collapsible popout">
+                {% for workitem in workitems %}
+                    <li>
+                      <div class="collapsible-header">
+                             <i class="material-icons">arrow_drop_down</i>
+                                  {{ workitem }}
+                      </div>
+                      <div class="collapsible-body">
+                            <div class="collection">
+                                <a class="collection-item grey white-text">
+                                    <div class="valign-wrapper">
+                                        <i class="material-icons">edit</i> Tasks
+                                    </div>
+                                </a>
+                                {% for task in workitem.task_set.all %}
+                                    {% if not task.informacion_defecto %}
+                                    <a href="{% url 'tasks:ver_task' task.id %}" class="row collection-item {% if task.estado == 0 %} red-text {% elif task.estado == 1%} yellow-text {% elif task.estado == 2%} blue-text {% else %} green-text{% endif %}">
+                                        <div class="col s12 l4 m4">
+                                             {{ task }}
+                                        </div>
+                                         <div class="col hide-on-small-only l4 m4 ">
+                                            {{ task.get_estado_display }}
+                                         </div>
+                                        <div class="col hide-on-small-only l4 m4">
+                                            Quién lo está haciendo / ha hecho
+                                        </div>
+                                    </a>
+                                    {% endif %}
+                                {% endfor %}
+                                <a class="collection-item grey white-text">
+                                    <div class="valign-wrapper">
+                                        <i class="material-icons">bug_report</i> Defectos
+                                    </div>
+                                </a>
+                                {% for task in workitem.task_set.all %}
+                                    {% if task.informacion_defecto %}
+                                    <a href="{% url 'tasks:ver_task' task.id %}" class="row collection-item {% if task.estado == 0 %} red-text {% elif task.estado == 1%} yellow-text {% elif task.estado == 2%} blue-text {% else %} green-text{% endif %}">
+                                        <div class="col s12 l4 m4">
+                                             {{ task }}
+                                        </div>
+                                         <div class="col hide-on-small-only l4 m4 ">
+                                            {{ task.get_estado_display }}
+                                         </div>
+                                        <div class="col hide-on-small-only l4 m4">
+                                            Quién lo está haciendo / ha hecho
+                                        </div>
+                                    </a>
+                                    {% endif %}
+                                {% endfor %}
+                                <a href="{% url 'workitems:ver_workitem' workitem.id %}" class="collection-item black white-text">
+                                    <div class="valign-wrapper">
+                                        <i class="material-icons">add</i> Ver más
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                        {% for task in workitem.task_set.all %}
-                            {% if not task.informacion_defecto %}
-                            <a href="{% url 'tasks:ver_task' task.id %}" class="row collection-item {% if task.estado == 0 %} red-text {% elif task.estado == 1%} yellow-text {% elif task.estado == 2%} blue-text {% else %} green-text{% endif %}">
-                                <div class="col s12 l4 m4">
-                                     {{ task }}
-                                </div>
-                                 <div class="col hide-on-small-only l4 m4 ">
-                                    {{ task.get_estado_display }}
-                                 </div>
-                                <div class="col hide-on-small-only l4 m4">
-                                    Quién lo está haciendo / ha hecho
-                                </div>
-                            </a>
-                            {% endif %}
-                        {% endfor %}
-                        <a class="collection-item grey white-text">
-                            <div class="valign-wrapper">
-                                <i class="material-icons">bug_report</i> Defectos
-                            </div>
-                        </a>
-                        {% for task in workitem.task_set.all %}
-                            {% if task.informacion_defecto %}
-                            <a href="{% url 'tasks:ver_task' task.id %}" class="row collection-item {% if task.estado == 0 %} red-text {% elif task.estado == 1%} yellow-text {% elif task.estado == 2%} blue-text {% else %} green-text{% endif %}">
-                                <div class="col s12 l4 m4">
-                                     {{ task }}
-                                </div>
-                                 <div class="col hide-on-small-only l4 m4 ">
-                                    {{ task.get_estado_display }}
-                                 </div>
-                                <div class="col hide-on-small-only l4 m4">
-                                    Quién lo está haciendo / ha hecho
-                                </div>
-                            </a>
-                            {% endif %}
-                        {% endfor %}
-                        <a href="{% url 'workitems:ver_workitem' workitem.id %}" class="collection-item black white-text">
-                            <div class="valign-wrapper">
-                                <i class="material-icons">add</i> Ver más
-                            </div>
-                        </a>
-                    </div>
-              </div>
+                      </div>
+                    </li>
+                {% endfor %}
+              <li>
             </li>
-        {% endfor %}
-      <li>
-    </li>
-      </ul>
-    </div>
-    <div class="col s1"> </div>
+              </ul>
+            </div>
+            <div class="col s12" id="defectos">
+                 <table id="table_id" class="display">
+                    <thead>
+                        <tr>
+                            <th>Defecto </th>
+                            <th> Estado </th>
+                            <th> Fecha </th>
+                            <th>Task Asociado</th>
+                            <th>Work Item</th>
+                            <th>Task encontrado</th>
+                            <th>Work item task encontrado</th>
+                            <th>Tiempo estimado</th>
+                            <th>Tiempo real</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for workitem in workitems %}
+                            {% for defecto in workitem.obtener_defectos %}
+                                <tr>
+                                    <td><a href="{% url 'tasks:ver_task' defecto.id %}" class="row collection-item {% if defecto.estado == 0 %} red-text {% elif defecto.estado == 1%} yellow-text {% elif defecto.estado == 2%} blue-text {% else %} green-text{% endif %}">{{ defecto }}</a></td>
+                                    <td> {{ defecto.get_estado_display }}</td>
+                                    <td> {{ defecto.fecha_termino|date:'d/m/y' }} </td>
+                                    <td>{{ defecto.informacion_defecto.task_asociado }}</td>
+                                    <td>{{ defecto.informacion_defecto.task_asociado.work_item }}</td>
+                                    <td> {{ defecto.informacion_defecto.task_encontrado }}</td>
+                                    <td>{{ defecto.informacion_defecto.task_encontrado.work_item }}</td>
+                                    <td>{{ defecto.tiempo_estimado }}</td>
+                                    <td> {{ defecto.obtener_tiempo }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col s1"> </div>
     </div>
     {% include 'modal_agregar_work_item.html' %}
 {% endblock %}
@@ -95,7 +140,16 @@
 {% block js %}
     <script>
          $(document).ready(function(){
+
+             $('.tabs').tabs();
             $('.collapsible').collapsible();
+            $('#table_id').DataTable( {
+                responsive:true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ]
+           } );
             var elem = document.querySelector('.fixed-action-btn');
             var instance = M.FloatingActionButton.init(elem, {
                 direction: 'left'

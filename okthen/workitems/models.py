@@ -10,3 +10,6 @@ class WorkItem(models.Model):
 
     def obtener_tasks_sin_defectos(self):
         return self.task_set.filter(informacion_defecto__isnull=True)
+
+    def obtener_defectos(self):
+        return self.task_set.filter(informacion_defecto__isnull=False)
