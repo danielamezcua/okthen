@@ -4,6 +4,7 @@ from workitems.models import WorkItem
 from django.db.models import Sum, F
 from decimal import Decimal
 import math
+import datetime
 
 #try
 class Task(models.Model):
@@ -70,6 +71,7 @@ class InfoDefecto(models.Model):
     task_asociado = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_origen_defecto", null=True)
     #Task donde se encontró el defcto
     task_encontrado = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_encuentra_defecto", null=True)
+    fecha = models.DateField(null= True, default=datetime.date.today)
     tipo = models.CharField(max_length=50, choices=TIPOS, null=True)
 
 class PersonaTaskRelacion(models.Model):
