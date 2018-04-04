@@ -24,7 +24,7 @@ SECRET_KEY = '+oxre_nxjfoyfy(hssq#$g27ntqky(u*6$qn8d5s^8el(b1om6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cavelabs.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['cavelabs.herokuapp.com', '127.0.0.1','localhost']
 
 
 # Application definition
@@ -91,8 +91,6 @@ DATETIME_INPUT_FORMATS = [
 TIME_FORMAT = ['%H:%M', ]  # 14:30
 TIME_INPUT_FORMATS = ['%H:%M', ]  # 14:30
 
-WSGI_APPLICATION = 'okthen.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -106,7 +104,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation
@@ -147,7 +144,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-WSGI_APPLICATION = 'okthen.wsgi.application'
 
 #
 STATICFILES_DIRS = [
@@ -156,4 +152,7 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WSGI_APPLICATION = 'okthen.wsgi.application'
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
