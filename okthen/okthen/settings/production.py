@@ -55,6 +55,7 @@ MIDDLEWARE = [
 ]
 WSGI_APPLICATION = 'okthen.wsgi.application'
 
+
 ROOT_URLCONF = 'okthen.urls'
 
 TEMPLATES = [
