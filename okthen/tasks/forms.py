@@ -35,12 +35,19 @@ class AcabarTask(ModelForm):
         }
 
 class DefectoForm(forms.Form):
+    TIPOS = (('Documentación','Documentación'),
+            ('Sintaxis','Sintaxis'),
+            ('Interfaz','Interfaz'),
+            ('Funcionalidad', 'Funcionalidad'),
+            ('Sistema', 'Sistema'),
+            ('Ambiente', 'Ambiente'))
     workitems = WorkItem.objects.all()
     tasks = Task.objects.all()
     workitem = forms.ModelChoiceField(workitems)
     task = forms.ModelChoiceField(tasks, required=False)
     descripcion = forms.CharField(max_length=200)
     tiempo_estimado = forms.DecimalField(max_digits=6, decimal_places=3, min_value=0)
+    tipo = forms.ChoiceField(choices=TIPOS)
 
     def __init__(self, *args, **kwargs):
         proyecto = kwargs.pop('proyecto',None)
