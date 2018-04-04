@@ -16,8 +16,9 @@
             <div class="row">
                 <div class="col s12">
                         <ul class="tabs">
-                            <li class="tab col s6"><a class="active" href="#workitems">Work Items</a></li>
-                            <li class="tab col s6"><a href="#defectos">Defectos</a></li>
+                            <li class="tab col s4"><a class="active" href="#workitems">Work Items</a></li>
+                            <li class="tab col s4"><a href="#defectos">Defectos</a></li>
+                            <li class="tab col s4"><a href="#summary">Plan Summary</a></li>
                         </ul>
                 </div>
             </div>
@@ -130,6 +131,84 @@
                     </tbody>
                 </table>
             </div>
+            <div class="col s12" id="summary">
+                <h3>Plan Summary</h3>
+                <div class="row">
+                    <div class="col s1"></div>
+                    <div class="col s5">
+                        <br>
+                        <h5>Tiempo por fase</h5>
+                        <table>
+                            <theader>
+                                <th>Fase</th>
+                                <th>Tiempo Planeado (Horas)</th>
+                                <th>Tiempo Real (Horas)</th>
+                                <th>Porcentaje</th>
+                            </theader>
+                            <tbody>
+                                {% for registro in tiempos %}
+                                    <tr>
+                                        <td>{{registro.tipo}}</td>
+                                        <td>{{registro.planeado}}</td>
+                                        <td>{{registro.real}}</td>
+                                        <td>{{registro.porcentaje}} %</td>
+                                    </tr>
+                                {% endfor %}
+                                    <tr>
+                                        <td><b>{{total.tipo}}</b></td>
+                                        <td><b>{{total.planeado}}</b></td>
+                                        <td><b>{{total.real}}</b></td>
+                                        <td><b>{{total.porcentaje}}</b> %</td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col s5 center-align">
+                        <br>
+                        <br>
+                        <br>
+                        <canvas id="fases" width="100" height="50" class="center-align"></canvas>
+                    </div>
+                    <div class="col s1"></div>
+                </div>
+                <div class="row">
+                    <div class="col s1"></div>
+                    <div class="col s5">
+                        <br>
+                        <h5>Defectos</h5>
+                        <table>
+                            <theader>
+                                <th>Fase</th>
+                                <th>Inyectados</th>
+                                <th>Removidos</th>
+                                <th>Porcentaje</th>
+                            </theader>
+                            <tbody>
+                                {% for registro in defectos %}
+                                    <tr>
+                                        <td>{{registro.tipo}}</td>
+                                        <td>{{registro.inyectados}}</td>
+                                        <td>{{registro.resueltos}}</td>
+                                        <td>{{registro.porcentaje}}%</td>
+                                    </tr>
+                                {% endfor %}
+                                    <tr>
+                                        <td><b>{{total_defectos.tipo}}</b></td>
+                                        <td><b>{{total_defectos.inyectados}}</b></td>
+                                        <td><b>{{total_defectos.resueltos}}</b></td>
+                                        <td><b>{{total_defectos.porcentaje}}</b> %</td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col s5 center-align">
+                        <br>
+                        <br>
+                        <br>
+                        <canvas id="defectos_p" width="100" height="50" class="center-align"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col s1"> </div>
     </div>
@@ -138,9 +217,19 @@
 
 
 {% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
     <script>
          $(document).ready(function(){
-
+             var csrftoken = $.cookie('csrftoken');
+             function csrfSafeMethod(method) {
+                 return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+             }$.ajaxSetup({
+                 beforeSend: function(xhr, settings) {
+                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                     }
+                 }
+             });
              $('.tabs').tabs();
             $('.collapsible').collapsible();
             $('#table_id').DataTable( {
@@ -156,6 +245,53 @@
             });
 
             $('.modal').modal();
+
+            var url = "{% url 'proyectos:consulta_fases' proyecto.id%}";
+            var defaultData = [];
+            var labels = [];
+
+            $.post(url,
+            {})
+            .done(function( data ) {
+              var contenido = $('#fases');
+              var myChart = new Chart(contenido,{
+                type: 'bar',
+                data: data,
+                options: {
+                  barValueSpacing: 20,
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              min: 0,
+                          }
+                      }]
+                  }
+              }
+              })
+            });
+
+            var url = "{% url 'proyectos:consulta_defectos' proyecto.id %}";
+            var defaultData = [];
+            var labels = [];
+
+            $.post(url,
+            {})
+            .done(function( data ) {
+              var contenido = $('#defectos_p');
+              var myChart = new Chart(contenido,{
+                type: 'line',
+                data: data,
+                options: {
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              min: 0,
+                          }
+                      }]
+                  }
+              }
+              })
+            });
         });
     </script>
 {% endblock %}
