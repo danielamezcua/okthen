@@ -81,11 +81,12 @@ def agregar_defecto(request):
             descripcion = form.cleaned_data['descripcion']
             tiempo_estimado = form.cleaned_data['tiempo_estimado']
             workitem = form.cleaned_data['workitem']
-            t = Task.objects.create(descripcion=descripcion, tiempo_estimado=tiempo_estimado, work_item=workitem)
+            t = Task.objects.create(descripcion=descripcion, tiempo_estimado=tiempo_estimado, work_item=workitem, tipo='DEFECTOS')
             t.save()
             persona = get_object_or_404(Persona, nombre=request.session['user'])
             task_asociado = form.cleaned_data['task']
-            d = InfoDefecto.objects.create(persona=persona, task_asociado=task_asociado)
+            tipo = form.cleaned_data['tipo']
+            d = InfoDefecto.objects.create(persona=persona, task_asociado=task_asociado, task_encontrado=task_asociado, tipo=tipo)
             d.save()
             t.informacion_defecto = d
             t.save()
@@ -100,12 +101,13 @@ def agregar_defecto_encontrado(request,id_task):
             descripcion = form.cleaned_data['descripcion']
             tiempo_estimado = form.cleaned_data['tiempo_estimado']
             workitem = form.cleaned_data['workitem']
-            t = Task.objects.create(descripcion=descripcion, tiempo_estimado=tiempo_estimado, work_item=workitem)
+            t = Task.objects.create(descripcion=descripcion, tiempo_estimado=tiempo_estimado, work_item=workitem, tipo='DEFECTOS')
             t.save()
             persona = get_object_or_404(Persona, nombre=request.session['user'])
             task_asociado = form.cleaned_data['task']
             task_encontrado = get_object_or_404(Task, pk=id_task)
-            d = InfoDefecto.objects.create(persona=persona, task_asociado=task_asociado, task_encontrado=task_encontrado)
+            tipo = form.cleaned_data['tipo']
+            d = InfoDefecto.objects.create(persona=persona, task_asociado=task_asociado, task_encontrado=task_encontrado,tipo=tipo)
             d.save()
             t.informacion_defecto = d
             t.save()

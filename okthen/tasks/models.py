@@ -4,6 +4,7 @@ from workitems.models import WorkItem
 from django.db.models import Sum, F
 from decimal import Decimal
 import math
+import datetime
 
 #try
 class Task(models.Model):
@@ -12,9 +13,11 @@ class Task(models.Model):
                       (2, "Calidad"),
                       (3, "Terminada"))
     FASES = (('PLAN','PLAN'),
+            ('DISEÑO','DISEÑO'),
             ('DESARROLLO','DESARROLLO'),
             ('PRUEBAS', "PRUEBAS"),
-            ('POSTMORTEM', "POSTMORTEM"))
+            ('POSTMORTEM', "POSTMORTEM"),
+            ('DEFECTOS', "DEFECTOS"))
 
     descripcion = models.CharField(blank=False,null=True, max_length=600)
     tiempo_estimado = models.DecimalField(max_digits=6, decimal_places=3)
@@ -56,12 +59,20 @@ class Task(models.Model):
         return self.descripcion
 
 class InfoDefecto(models.Model):
+    TIPOS = (('Documentación','Documentación'),
+            ('Sintaxis','Sintaxis'),
+            ('Interfaz','Interfaz'),
+            ('Funcionalidad', 'Funcionalidad'),
+            ('Sistema', 'Sistema'),
+            ('Ambiente', 'Ambiente'))
     #Quién encontró el defecto
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE, related_name="persona_detecta_defecto")
     #Task que tiene el defecto
     task_asociado = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_origen_defecto", null=True)
     #Task donde se encontró el defcto
     task_encontrado = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_encuentra_defecto", null=True)
+    fecha = models.DateField(null= True, default=datetime.date.today)
+    tipo = models.CharField(max_length=50, choices=TIPOS, null=True)
 
 class PersonaTaskRelacion(models.Model):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
