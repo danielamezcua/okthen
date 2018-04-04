@@ -30,9 +30,15 @@ def resumen(request, id_persona):
                 if tiempo["tipo"] == registro["task__tipo"]:
                     tiempo_planeado_total+=tiempo['planeado']
                     tiempo_real_total+=registro['real']
-                    porcentaje = round(((registro['real'] * 100) / tiempo['planeado']),2)
+                    try:
+                        porcentaje = round(((registro['real'] * 100) / tiempo['planeado']),2)
+                    except ZeroDivisionError:
+                        porcentaje = 0
                     tiempos.append({'tipo':tiempo["tipo"],'planeado':tiempo['planeado'],'real':registro["real"],'porcentaje':porcentaje})
-        porcentaje_total = round(tiempo_real_total * 100 / tiempo_planeado_total,2)
+        try:
+            porcentaje_total = round(tiempo_real_total * 100 / tiempo_planeado_total,2)
+        except ZeroDivisionError:
+            porcentaje_total = 0
         total = {'tipo':'TOTAL','planeado':tiempo_planeado_total,'real':tiempo_real_total,'porcentaje':porcentaje_total }
         #DEFECTOS
         defectos_inyectados = InfoDefecto.objects.values('task_asociado__tipo').filter(persona__nombre=persona.nombre).annotate(Count('task_asociado__tipo'))
@@ -45,9 +51,15 @@ def resumen(request, id_persona):
                     if x['task_asociado__tipo'] == z['informacion_defecto__task_asociado__tipo']:
                         total_inyectados+=x['task_asociado__tipo__count']
                         total_resueltos+=z['informacion_defecto__task_asociado__tipo__count']
-                        porcentaje = round(((z['informacion_defecto__task_asociado__tipo__count'] * 100) / x['task_asociado__tipo__count']),2)
+                        try:
+                            porcentaje = round(((z['informacion_defecto__task_asociado__tipo__count'] * 100) / x['task_asociado__tipo__count']),2)
+                        except ZeroDivisionError:
+                            porcentaje = 0
                         defectos.append({'tipo':x['task_asociado__tipo'],'inyectados':x['task_asociado__tipo__count'],'resueltos':z['informacion_defecto__task_asociado__tipo__count'],'porcentaje':porcentaje})
-        porcentaje_total = round(((total_resueltos * 100) / total_inyectados),2)
+        try:
+            porcentaje_total = round(((total_resueltos * 100) / total_inyectados),2)
+        except ZeroDivisionError:
+            porcentaje_total = 0
         total_defectos = {'tipo':'TOTAL','inyectados':total_inyectados,'resueltos':total_resueltos,'porcentaje':porcentaje_total }
         return render(request, 'resumen_persona.html', {'persona':persona, 'logs':logs,'tiempos':tiempos,'total':total,'defectos':defectos,'total_defectos':total_defectos})
     return valid
