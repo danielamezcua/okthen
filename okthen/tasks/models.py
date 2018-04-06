@@ -2,7 +2,7 @@ from django.db import models
 from personas.models import Persona
 from workitems.models import WorkItem
 from django.db.models import Sum, F
-from decimal import Decimal
+from decimal import Decimal, DivisionByZero, InvalidOperation
 import math
 import datetime
 
@@ -53,7 +53,10 @@ class Task(models.Model):
         return self.obtener_defectos().count()
 
     def obtener_error(self):
-        return round(Decimal(math.fabs(self.tiempo_estimado - self.obtener_tiempo_total()))/self.tiempo_estimado,4)
+        try:
+            return round(Decimal(math.fabs(self.tiempo_estimado - self.obtener_tiempo_total()))/self.tiempo_estimado,4)
+        except (InvalidOperation,DivisionByZero):
+            return 0
 
     def __str__(self):
         return self.descripcion
