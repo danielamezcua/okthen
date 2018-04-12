@@ -47,7 +47,11 @@ def log_task(request, id_task):
                         task.estado = 1
                 #Sí se acabó
                 elif form.cleaned_data['acabada'] == 1:
-                    task.estado = 2
+                    if task.informacion_defecto:
+                        task.estado = 3
+                        return redirect('workitems:ver_workitem', task.work_item.id)
+                    else:
+                        task.estado = 2
                 task.save()
                 log.task = task
                 log.persona = persona
@@ -67,7 +71,8 @@ def terminar_task(request,id_task):
     valid = validate(request)
     if valid == True:
         task = get_object_or_404(Task, pk=id_task)
-        task.estado = 3
+        if task.informacion_defecto:
+            task.estado = 3
         task.fecha_termino = datetime.datetime.now()
         task.save()
         return redirect(reverse('workitems:ver_workitem', kwargs={'id_workitem':task.work_item.id}))

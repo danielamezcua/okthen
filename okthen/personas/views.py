@@ -6,6 +6,10 @@ from django.db.models import Sum, Count
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 import json
 from django.db import connection
+from django.db.models.functions import Cast
+from django.db.models.fields import DateField
+from decimal import Decimal, DivisionByZero, InvalidOperation
+
 
 def index(request):
     valid = validate(request)
@@ -20,6 +24,7 @@ def resumen(request, id_persona):
     if valid == True:
         persona = get_object_or_404(Persona, pk=id_persona)
         logs = PersonaTaskRelacion.objects.filter(persona=persona)
+        logs_por_dia = obtener_logs_por_dia(persona)
         cursor = connection.cursor()
         #TIEMPO FASES
         cursor.execute(
@@ -81,7 +86,7 @@ def resumen(request, id_persona):
         except ZeroDivisionError:
             porcentaje_total = 0
         total_defectos = {'tipo':'TOTAL','inyectados':total_inyectados,'resueltos':total_resueltos,'porcentaje':porcentaje_total }
-        return render(request, 'resumen_persona.html', {'persona':persona, 'logs':logs,'tiempos':tiempos,'total':total,'defectos':defectos,'total_defectos':total_defectos})
+        return render(request, 'resumen_persona.html', {'persona':persona, 'logs':logs,'logs_por_dia':logs_por_dia,'tiempos':tiempos,'total':total,'defectos':defectos,'total_defectos':total_defectos})
     return valid
 
 def consulta_fases(request, id_persona):
@@ -143,3 +148,23 @@ def consulta_defectos(request, id_persona):
                 "datasets":valores
             }
             return JsonResponse(data)
+
+def obtener_logs_por_dia(persona):
+    tasks_por_dia = []
+    dias = PersonaTaskRelacion.objects.filter(persona=persona).annotate(dia=Cast('inicio', DateField())).values_list('dia', flat=True).distinct().order_by('dia')
+    for dia in dias:
+        tasks = PersonaTaskRelacion.objects.filter(persona=persona).annotate(dia=Cast('inicio',DateField())).filter(dia=dia)
+        tasks_por_dia.append(TasksPorDia(tasks,dia))
+    return tasks_por_dia
+
+class TasksPorDia:
+    def __init__(self, tasks, dia):
+        self.tasks = tasks
+        self.dia = dia
+
+    def obtener_total_tiempo(self):
+        tiempo = Decimal(0)
+        for task in self.tasks:
+          tiempo = tiempo + task.tiempo
+        return tiempo
+
