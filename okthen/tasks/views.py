@@ -52,6 +52,7 @@ def log_task(request, id_task):
                         task.save()
                         log.task = task
                         log.persona = persona
+                        log.save()
                         return redirect('workitems:ver_workitem', task.work_item.id)
                     else:
                         task.estado = 2
