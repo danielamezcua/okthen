@@ -49,6 +49,9 @@ def log_task(request, id_task):
                 elif form.cleaned_data['acabada'] == 1:
                     if task.informacion_defecto:
                         task.estado = 3
+                        task.save()
+                        log.task = task
+                        log.persona = persona
                         return redirect('workitems:ver_workitem', task.work_item.id)
                     else:
                         task.estado = 2
