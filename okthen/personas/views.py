@@ -5,6 +5,7 @@ from .models import *
 from django.db.models import Sum, Count
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 import json
+from django.db import connection
 
 def index(request):
     valid = validate(request)
@@ -19,46 +20,49 @@ def resumen(request, id_persona):
     if valid == True:
         persona = get_object_or_404(Persona, pk=id_persona)
         logs = PersonaTaskRelacion.objects.filter(persona=persona)
+        cursor = connection.cursor()
         #TIEMPO FASES
-        tiempo_planeado = Task.objects.raw(
+        cursor.execute(
         '''
-        SELECT id ,tipo, SUM(tiempo_estimado) as planeado
-        FROM (SELECT DISTINCT tasks_task.id, tipo, tiempo_estimado
+        SELECT tipo, SUM(tiempo_estimado) as planeado
+        FROM (SELECT tasks_task.id, tipo, tiempo_estimado
         FROM "tasks_task"
         INNER JOIN "tasks_personataskrelacion" ON ("tasks_task"."id" = "tasks_personataskrelacion"."task_id")
         INNER JOIN "personas_persona" ON ("tasks_personataskrelacion"."persona_id" = "personas_persona"."id")
         WHERE ("personas_persona"."nombre" = %s AND NOT ("tasks_task"."tipo" IS NULL))) as sub
-        GROUP BY tipo,id''',[persona.nombre])
-        tiempo_real = Task.objects.raw(
+        GROUP BY tipo''',[persona.nombre])
+        tiempo_planeado = cursor.fetchall()
+        cursor.execute(
         '''
-        SELECT id ,tipo, SUM(tiempo) as valor
-        FROM (SELECT DISTINCT tasks_task.id, tipo, tiempo
+        SELECT tipo, SUM(tiempo) as valor
+        FROM (SELECT tasks_task.id, tipo, tiempo
         FROM "tasks_task"
         INNER JOIN "tasks_personataskrelacion" ON ("tasks_task"."id" = "tasks_personataskrelacion"."task_id")
         INNER JOIN "personas_persona" ON ("tasks_personataskrelacion"."persona_id" = "personas_persona"."id")
         WHERE ("personas_persona"."nombre" = %s AND NOT ("tasks_task"."tipo" IS NULL))) as sub
-        GROUP BY tipo,id''',[persona.nombre])
+        GROUP BY tipo''',[persona.nombre])
+        tiempo_real = cursor.fetchall()
         tiempos = []
         tiempo_planeado_total = 0
         tiempo_real_total = 0
         for tiempo in tiempo_planeado:
             for registro in tiempo_real:
-                if tiempo.tipo == registro.tipo:
-                    tiempo_planeado_total+=tiempo.planeado
-                    tiempo_real_total+=registro.valor
+                if tiempo[0]== registro[0]:
+                    tiempo_planeado_total+=tiempo[1]
+                    tiempo_real_total+=registro[1]
                     try:
-                        porcentaje = round(((registro.valor * 100) / tiempo.planeado),2)
+                        porcentaje = round(((registro[1] * 100) / tiempo[1]),2)
                     except ZeroDivisionError:
                         porcentaje = 0
-                    tiempos.append({'tipo':tiempo.tipo,'planeado':tiempo.planeado,'real':registro.valor,'porcentaje':porcentaje})
+                    tiempos.append({'tipo':tiempo[0],'planeado':tiempo[1],'real':registro[1],'porcentaje':porcentaje})
         try:
             porcentaje_total = round(tiempo_real_total * 100 / tiempo_planeado_total,2)
         except ZeroDivisionError:
             porcentaje_total = 0
         total = {'tipo':'TOTAL','planeado':tiempo_planeado_total,'real':tiempo_real_total,'porcentaje':porcentaje_total }
         #DEFECTOS
-        defectos_inyectados = InfoDefecto.objects.values('task_asociado__tipo').filter(persona__nombre=persona.nombre).annotate(Count('task_asociado__tipo'))
-        defectos_resueltos = Task.objects.values('informacion_defecto__task_asociado__tipo').filter(informacion_defecto__persona=persona).filter(estado=3).annotate(Count('informacion_defecto__task_asociado__tipo'))
+        defectos_inyectados = InfoDefecto.objects.values('task_asociado__tipo').filter(persona__nombre=persona.nombre).annotate(Count('task_asociado__tipo')).exclude(task_asociado__tipo=None)
+        defectos_resueltos = Task.objects.values('informacion_defecto__task_asociado__tipo').filter(informacion_defecto__persona=persona).filter(estado=3).annotate(Count('informacion_defecto__task_asociado__tipo')).exclude(informacion_defecto__task_asociado__tipo=None)
         defectos = []
         total_inyectados = 0
         total_resueltos = 0
@@ -84,33 +88,37 @@ def consulta_fases(request, id_persona):
     if request.method == 'POST':
             valores = []
             persona = get_object_or_404(Persona, pk=id_persona)
-            tiempo_planeado = Task.objects.raw(
+            cursor = connection.cursor()
+            #TIEMPO FASES
+            cursor.execute(
             '''
-            SELECT id ,tipo, SUM(tiempo_estimado) as planeado
-            FROM (SELECT DISTINCT tasks_task.id, tipo, tiempo_estimado
+            SELECT tipo, SUM(tiempo_estimado) as planeado
+            FROM (SELECT tasks_task.id, tipo, tiempo_estimado
             FROM "tasks_task"
             INNER JOIN "tasks_personataskrelacion" ON ("tasks_task"."id" = "tasks_personataskrelacion"."task_id")
             INNER JOIN "personas_persona" ON ("tasks_personataskrelacion"."persona_id" = "personas_persona"."id")
             WHERE ("personas_persona"."nombre" = %s AND NOT ("tasks_task"."tipo" IS NULL))) as sub
-            GROUP BY tipo,id''',[persona.nombre])
-            tiempo_real = Task.objects.raw(
+            GROUP BY tipo''',[persona.nombre])
+            tiempo_planeado = cursor.fetchall()
+            cursor.execute(
             '''
-            SELECT id ,tipo, SUM(tiempo) as valor
-            FROM (SELECT DISTINCT tasks_task.id, tipo, tiempo
+            SELECT tipo, SUM(tiempo) as valor
+            FROM (SELECT tasks_task.id, tipo, tiempo
             FROM "tasks_task"
             INNER JOIN "tasks_personataskrelacion" ON ("tasks_task"."id" = "tasks_personataskrelacion"."task_id")
             INNER JOIN "personas_persona" ON ("tasks_personataskrelacion"."persona_id" = "personas_persona"."id")
             WHERE ("personas_persona"."nombre" = %s AND NOT ("tasks_task"."tipo" IS NULL))) as sub
-            GROUP BY tipo,id''',[persona.nombre])
+            GROUP BY tipo''',[persona.nombre])
+            tiempo_real = cursor.fetchall()
             data_planeado = []
             data_real = []
             fases = []
             for tiempo in tiempo_planeado:
-                data_planeado.append(float(tiempo.planeado))
-                fases.append(tiempo.tipo)
+                data_planeado.append(float(tiempo[1]))
+                fases.append(tiempo[0])
             valores.append({'label':'Planeado','backgroundColor':'gray','data':data_planeado})
             for tiempo in tiempo_real:
-                data_real.append(float(tiempo.valor))
+                data_real.append(float(tiempo[1]))
             valores.append({'label':'Real','backgroundColor':'black','data':data_real})
             data = {
                 "labels":fases,
@@ -122,7 +130,7 @@ def consulta_defectos(request, id_persona):
     if request.method == 'POST':
             valores = []
             persona = get_object_or_404(Persona, pk=id_persona)
-            numeros = InfoDefecto.objects.values('fecha').filter(persona__nombre=persona.nombre).annotate(Count('fecha'))
+            numeros = InfoDefecto.objects.values('fecha').filter(persona__nombre=persona.nombre).annotate(Count('fecha')).exclude(task_asociado__tipo=None)
             data_defectos = []
             fechas = []
             for numero in numeros:
