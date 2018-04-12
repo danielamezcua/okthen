@@ -151,7 +151,7 @@ def consulta_defectos(request, id_persona):
 
 def obtener_logs_por_dia(persona):
     tasks_por_dia = []
-    dias = PersonaTaskRelacion.objects.filter(persona=persona).annotate(dia=Cast('inicio', DateField())).values_list('dia', flat=True).distinct().order_by('dia')
+    dias = PersonaTaskRelacion.objects.filter(persona=persona).annotate(dia=Cast('inicio', DateField())).values_list('dia', flat=True).distinct().order_by('-dia')
     for dia in dias:
         tasks = PersonaTaskRelacion.objects.filter(persona=persona).annotate(dia=Cast('inicio',DateField())).filter(dia=dia)
         tasks_por_dia.append(TasksPorDia(tasks,dia))
@@ -167,4 +167,3 @@ class TasksPorDia:
         for task in self.tasks:
           tiempo = tiempo + task.tiempo
         return tiempo
-
