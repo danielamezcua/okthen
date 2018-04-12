@@ -4,7 +4,9 @@ from workitems.forms import WorkItemForm
 from okthen.sessions import validate
 from proyectos.models import Proyecto
 from .models import WorkItem
+from tasks.models import *
 from django.http import HttpResponse
+from django.urls import reverse
 
 def ver_workitem(request, id_workitem):
     valid = validate(request)
@@ -36,3 +38,8 @@ def obtener_tasks_work_item(request):
     for task in tasks:
         response += "<option value='" + str(task.id) + "'>" + task.descripcion + "</option>"
     return HttpResponse(response)
+
+def elimina_task(request, id_workitem, id_task):
+    task = get_object_or_404(Task, id=id_task)
+    task.delete()
+    return redirect(reverse('workitems:ver_workitem',kwargs={'id_workitem':id_workitem}))

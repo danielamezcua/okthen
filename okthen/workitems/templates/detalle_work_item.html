@@ -51,6 +51,7 @@
                     <th>Tiempo s/ def.</th>
                     <th>Tiempo c/ def.</th>
                     <th>Error </th>
+                    <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,6 +65,11 @@
                         <td>{{ task.obtener_tiempo }}</td>
                         <td>{{ task.obtener_tiempo_total }}</td>
                         <td>{{ task.obtener_error}}</td>
+                        <td class="center">
+                            <a href="#modal_eliminar" class="modal-trigger">
+                                <i class="material-icons borrar" id="{{task.id}}" onclick="eliminar_task({{workitem.id}},{{task.id}})" data-task="{{task}}">delete</i>
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -92,6 +98,25 @@
         <h4>Resumen</h4>
         </div>
         <div class="col s1"> </div>
+    </div>
+
+    <div class="modal" id="modal_eliminar">
+        <div class="modal-content">
+            <h4 class="center">Eliminar Task</h4>
+            <br>
+            <div class="modal-body">
+                <div class="center">
+                    <i class="material-icons medium">delete</i>
+                    <br>
+                    <br>
+                    <div id="contenido"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer center" id="botones_modal">
+
+            </div>
+        </div>
     </div>
 
     <!--Modals-->
@@ -142,6 +167,14 @@
                }
            });
        });
+
+       function eliminar_task(item,id){
+           var task = $('#'+id).data('task')
+           var contenido = '<h5>¿Estás seguro de eliminar la task <b>'+task+'</b>?</h5><br><br>';
+           var botones = '<div class="text-center"><div class="row center"><div class="col s2 m2"></div><a class="modal-action modal-close waves-effect waves-light col s3 m3 btn btn-large grey lighten-1">Cancelar <i class="material-icons left">arrow_back</i></a><div class="col s2 m2"></div><a href="/workitems/elimina_task/'+item+'/'+id+'" class="waves-effect waves-light col s3 m3 btn btn-large red lighten-1">Eliminar <i class="material-icons left">delete</i></a><div class="col s2 m2"></div></div></div>';
+           $("#contenido").html(contenido);
+           $("#botones_modal").html(botones);
+       }
 
     </script>
 {% endblock %}
