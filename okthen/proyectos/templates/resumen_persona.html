@@ -16,20 +16,60 @@
                     <th>Porcentaje</th>
                 </theader>
                 <tbody>
-                    {% for registro in tiempos %}
-                        <tr>
-                            <td>{{registro.tipo}}</td>
-                            <td>{{registro.planeado}}</td>
-                            <td>{{registro.real}}</td>
-                            <td>{{registro.porcentaje}} %</td>
-                        </tr>
-                    {% endfor %}
-                        <tr>
-                            <td><b>{{total.tipo}}</b></td>
-                            <td><b>{{total.planeado}}</b></td>
-                            <td><b>{{total.real}}</b></td>
-                            <td><b>{{total.porcentaje}}</b> %</td>
-                        </tr>
+                    {% if tiempos.3 %}
+                    <tr>
+                        <td>{{tiempos.3.tipo}}</td>
+                        <td>{{tiempos.3.planeado}}</td>
+                        <td>{{tiempos.3.real}}</td>
+                        <td>{{tiempos.3.porcentaje}} %</td>
+                    </tr>
+                    {% endif %}
+                    {% if tiempos.2 %}
+                    <tr>
+                        <td>{{tiempos.2.tipo}}</td>
+                        <td>{{tiempos.2.planeado}}</td>
+                        <td>{{tiempos.2.real}}</td>
+                        <td>{{tiempos.2.porcentaje}} %</td>
+                    </tr>
+                    {% endif %}
+                    {% if tiempos.1 %}
+                    <tr>
+                        <td>{{tiempos.1.tipo}}</td>
+                        <td>{{tiempos.1.planeado}}</td>
+                        <td>{{tiempos.1.real}}</td>
+                        <td>{{tiempos.1.porcentaje}} %</td>
+                    </tr>
+                    {% endif %}
+                    {% if tiempos.5 %}
+                    <tr>
+                        <td>{{tiempos.5.tipo}}</td>
+                        <td>{{tiempos.5.planeado}}</td>
+                        <td>{{tiempos.5.real}}</td>
+                        <td>{{tiempos.5.porcentaje}} %</td>
+                    </tr>
+                    {% endif %}
+                    {% if tiempos.4 %}
+                    <tr>
+                        <td>{{tiempos.4.tipo}}</td>
+                        <td>{{tiempos.4.planeado}}</td>
+                        <td>{{tiempos.4.real}}</td>
+                        <td>{{tiempos.4.porcentaje}} %</td>
+                    </tr>
+                    {% endif %}
+                    {% if tiempos.0 %}
+                    <tr>
+                        <td>{{tiempos.0.tipo}}</td>
+                        <td>{{tiempos.0.planeado}}</td>
+                        <td>{{tiempos.0.real}}</td>
+                        <td>{{tiempos.0.porcentaje}} %</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td><b>{{total.tipo}}</b></td>
+                        <td><b>{{total.planeado}}</b></td>
+                        <td><b>{{total.real}}</b></td>
+                        <td><b>{{total.porcentaje}}</b> %</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
