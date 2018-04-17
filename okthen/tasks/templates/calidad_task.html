@@ -21,13 +21,48 @@
             <hr>
 
             <div class="row">
+                <p>
+                    <label>
+                        <input type="checkbox" class="checkbox text-black filled-in"  />
+                        <span> Ortografía/Redacción </span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" class="checkbox black filled-in"  />
+                        <span> Estándares </span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" class="checkbox black filled-in" />
+                        <span> Funcionalidad </span>
+                    </label>
+                </p>
+
+                <p>
+                    <label>
+                        <input type="checkbox" class="checkbox black filled-in"/>
+                        <span> Eficiencia </span>
+                    </label>
+                </p>
+
+                <p>
+                    <label>
+                        <input type="checkbox" class="checkbox black filled-in"  />
+                        <span> Comentarios </span>
+                    </label>
+                </p>
+            </div>
+
+            <div class="row">
                 <div class="col s6">
                   <button class="btn waves-effect waves-light black modal-trigger"  href="#modal_defecto" type="submit" name="action">Agregar defecto
                     <i class="material-icons right">bug_report</i>
                   </button>
                 </div>
                 <div class="col s6">
-                  <a href="{% url 'tasks:terminar_task' task.id %}" class="btn waves-effect waves-light black right-align" type="submit" name="action">Terminar
+                  <a href="{% url 'tasks:terminar_task' task.id %}" class="btn waves-effect waves-light black right-align" type="submit" id="boton_terminar" name="action">Terminar
                     <i class="material-icons right">send</i>
                   </a>
                 </div>
@@ -43,10 +78,11 @@
     <script>
          $(document).ready(function(){
                 $('.modal').modal();
-             $('#id_workitem').val({{ task.work_item.id }});
-            $('#id_task').val({{ task.id }});
-
+                $('#id_workitem').val({{ task.work_item.id }});
+                $('#id_task').val({{ task.id }});
+                $('#boton_terminar').addClass('disabled');
                 $('select').formSelect();
+                $(".dropdown-content>li>span").css("color", "#000000");
                 $(".dropdown-content>li>span").css("color", "#000000");
         });
          $('#id_workitem').change(function(){
@@ -60,5 +96,14 @@
                }
            });
        });
+
+         //Verificar que los checkboxes estén checados
+         $('.checkbox').change(function(){
+             if ($('.checkbox:checked').length == $('.checkbox').length) {
+                 $('#boton_terminar').removeClass('disabled');
+             } else {
+                 $('#boton_terminar').addClass('disabled');
+             }
+         });
     </script>
 {% endblock %}
