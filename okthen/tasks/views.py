@@ -50,6 +50,7 @@ def log_task(request, id_task):
                     if task.informacion_defecto:
                         task.estado = 3
                         task.save()
+                        task.fecha_termino = datetime.datetime.now()
                         log.task = task
                         log.persona = persona
                         log.save()
