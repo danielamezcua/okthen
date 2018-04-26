@@ -49,8 +49,8 @@ def log_task(request, id_task):
                 elif form.cleaned_data['acabada'] == 1:
                     if task.informacion_defecto:
                         task.estado = 3
-                        task.save()
                         task.fecha_termino = datetime.datetime.now()
+                        task.save()
                         log.task = task
                         log.persona = persona
                         log.save()
