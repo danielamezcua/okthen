@@ -142,14 +142,43 @@ def consulta_fases(request, id_proyecto):
 def consulta_defectos(request, id_proyecto):
     if request.method == 'POST':
             valores = []
-            numeros = InfoDefecto.objects.values('fecha').filter(task_asociado__work_item__proyecto__id=id_proyecto).annotate(Count('fecha')).exclude(task_asociado__tipo=None)
+            numeros = InfoDefecto.objects.values('fecha').filter(task_asociado__work_item__proyecto__id=id_proyecto).annotate(Count('fecha')).order_by('fecha')
+            numeros_hechos = Task.objects.values('fecha_termino').exclude(informacion_defecto_id=None).filter(work_item__proyecto__id=id_proyecto).filter(estado=3).annotate(Count('fecha_termino')).order_by('fecha_termino')
             data_defectos = []
+            data_defectos_hechos = []
             fechas = []
+
             for numero in numeros:
-                data_defectos.append(numero['fecha__count'])
-                fechas.append(numero['fecha'].strftime('%d/%m/%Y'))
+                fechas.append(numero['fecha'])
+
+            for numero in numeros_hechos:
+                if numero['fecha_termino'] not in fechas:
+                    fechas.append(numero['fecha_termino'])
+            fechas.sort()
+            i = 0
+            j = 0
+            for fecha in fechas:
+                try:
+                    if fecha == numeros[i]['fecha']:
+                        data_defectos.append(numeros[i]['fecha__count'])
+                        i = i + 1
+                    else:
+                        data_defectos.append(0)
+                except IndexError:
+                    data_defectos.append(0)
+
+                try:
+                    if fecha == numeros_hechos[j]['fecha_termino']:
+                        data_defectos_hechos.append(numeros_hechos[j]['fecha_termino__count'])
+                        j = j + 1
+                    else:
+                        data_defectos_hechos.append(0)
+                except IndexError:
+                    data_defectos_hechos.append(0)
+
             valores = []
-            valores.append({'label':'Defectos por día','borderColor':'gray','data':data_defectos,'fill':False})
+            valores.append({'label':'Defectos encontrados','borderColor':'red','data':data_defectos,'fill':False})
+            valores.append({'label':'Defectos arreglados','borderColor':'blue','data':data_defectos_hechos,'fill':False})
             data = {
                 "labels":fechas,
                 "datasets":valores
