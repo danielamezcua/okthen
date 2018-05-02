@@ -142,14 +142,13 @@ def consulta_fases(request, id_proyecto):
 def consulta_defectos(request, id_proyecto):
     if request.method == 'POST':
             valores = []
-            numeros = InfoDefecto.objects.values('fecha').filter(task_asociado__work_item__proyecto__id=id_proyecto).annotate(Count('fecha')).order_by('fecha')
+            numeros = Task.objects.filter(work_item__proyecto__id=id_proyecto, informacion_defecto__isnull=False).values('informacion_defecto__fecha').annotate(Count('informacion_defecto__fecha')).order_by('informacion_defecto__fecha')
             numeros_hechos = Task.objects.values('fecha_termino').exclude(informacion_defecto_id=None).filter(work_item__proyecto__id=id_proyecto).filter(estado=3).annotate(Count('fecha_termino')).order_by('fecha_termino')
             data_defectos = []
             data_defectos_hechos = []
             fechas = []
-
             for numero in numeros:
-                fechas.append(numero['fecha'])
+                fechas.append(numero['informacion_defecto__fecha'])
 
             for numero in numeros_hechos:
                 if numero['fecha_termino'] not in fechas:
@@ -159,8 +158,8 @@ def consulta_defectos(request, id_proyecto):
             j = 0
             for fecha in fechas:
                 try:
-                    if fecha == numeros[i]['fecha']:
-                        data_defectos.append(numeros[i]['fecha__count'])
+                    if fecha == numeros[i]['informacion_defecto__fecha']:
+                        data_defectos.append(numeros[i]['informacion_defecto__fecha__count'])
                         i = i + 1
                     else:
                         data_defectos.append(0)
